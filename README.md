@@ -4,8 +4,7 @@ Quranify.
 ![Logo Quranify](assets/images/icon.png)
 
 ## bagian yang ditambahkan (sagara)
-![Logo Quranify](assets/images/icon.png)
-## Getting Started
+
 
 This project is a starting point for a Flutter application.
 
