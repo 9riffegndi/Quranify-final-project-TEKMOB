@@ -1,6 +1,6 @@
 # quranify
 
-A new Flutter project.
+A Quranify.
 
 ## Getting Started
 
