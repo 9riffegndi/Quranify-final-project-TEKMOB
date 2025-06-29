@@ -6,6 +6,8 @@ Quranify.
 ## bagian yang ditambahkan (sagara) -- page login
 ![login dan daftar](assets/daftarimage/pagelogin.png).
 
+bagian yang di tambahkan syukron -- routing and home- alquran
+
 
 
 This project is a starting point for a Flutter application.
