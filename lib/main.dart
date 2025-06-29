@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'features/akuncreate/login.dart'; // Pastikan file login.dart sudah ada
+import 'app_routes.dart';
+import 'features/akuncreate/login.dart';
+import 'features/home/home.dart'; // ✅ pastikan path sesuai dengan file HomeScreen kamu
+import 'features/quran/alquran_screen.dart'; // ✅ pastikan path sesuai dengan file AlquranScreen kamu
 
 void main() {
   runApp(const Quranify());
@@ -11,11 +14,19 @@ class Quranify extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Quranify',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light().copyWith(
-        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      ),
-      home: const SplashScreen(),
+      initialRoute: '/', // Awal aplikasi di SplashScreen
+      routes: {
+        AppRoutes.home: (_) => const HomeScreen(),
+        AppRoutes.quran: (_) => const AlquranScreen(),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/') {
+          return MaterialPageRoute(builder: (_) => const SplashScreen());
+        }
+        return AppRoutes.generateRoute(settings);
+      },
     );
   }
 }
@@ -28,31 +39,24 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  // ignore: unused_field
   double _opacity = 0.0;
-  // ignore: unused_field
   double _scale = 0.8;
 
   @override
   void initState() {
     super.initState();
-    // Mulai animasi setelah build pertama
     Future.delayed(const Duration(milliseconds: 200), () {
       setState(() {
         _opacity = 1.0;
         _scale = 1.0;
       });
     });
-    // Navigasi ke login setelah 2 detik
+
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
-      );
+      // Navigasi ke halaman login lewat routing
+      Navigator.pushReplacementNamed(context, AppRoutes.login);
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -66,14 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
           duration: const Duration(milliseconds: 500),
           child: Transform.scale(
             scale: _scale,
-            child: SizedBox(
-              width: screenWidth * 0.5,
-              height: screenWidth * 0.5,
-              child: Image.asset(
-                'assets/images/icon.png',
-                fit: BoxFit.contain,
-              ),
-            ),
+            child: Image.asset('assets/images/icon.png', width: screenWidth * 0.5),
           ),
         ),
       ),
