@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'ayah_model.dart';
 import 'ayah_service.dart';
 
@@ -20,6 +23,13 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   List<Ayah> _ayahs = [];
   bool _loading = true;
 
+  final AudioPlayer _player = AudioPlayer();
+  final FlutterTts _tts = FlutterTts();
+
+  int? _playingAyah;
+  bool _isPlayingTTS = false;
+  bool _isArabic = true;
+
   @override
   void initState() {
     super.initState();
@@ -30,9 +40,46 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
     try {
       _ayahs = await AyahService.fetchAyahs(widget.surahNumber);
     } catch (e) {
-      debugPrint('Error: $e');
+      debugPrint('Error loading ayahs: $e');
     }
     setState(() => _loading = false);
+  }
+
+  Future<void> _play(int ayahNumber, String text, bool isArabic) async {
+    setState(() {
+      _playingAyah = ayahNumber;
+      _isArabic = isArabic;
+      _isPlayingTTS = kIsWeb;
+    });
+
+    if (kIsWeb) {
+      await _tts.setLanguage(isArabic ? 'ar-SA' : 'id-ID');
+      await _tts.setSpeechRate(0.5);
+      await _tts.speak(text);
+    } else {
+      final url = 'https://verses.quran.com/Mishary_Rashid_Alafasy/${widget.surahNumber.toString().padLeft(3, '0')}${ayahNumber.toString().padLeft(3, '0')}.mp3';
+      await _player.play(UrlSource(url));
+    }
+  }
+
+  Future<void> _stop() async {
+    if (kIsWeb) {
+      await _tts.stop();
+    } else {
+      await _player.stop();
+    }
+
+    setState(() {
+      _playingAyah = null;
+      _isPlayingTTS = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _player.dispose();
+    _tts.stop();
+    super.dispose();
   }
 
   @override
@@ -49,9 +96,11 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
               itemCount: _ayahs.length,
               itemBuilder: (context, index) {
                 final ayah = _ayahs[index];
+                final isPlaying = _playingAyah == ayah.number;
+
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 10),
-                  elevation: 4,
+                  elevation: 3,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -60,17 +109,16 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Nomor ayat dan arab
+                        // Ayat Arab
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              '${ayah.number}. ',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                              ),
-                            ),
+                            Text('${ayah.number}. ',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
+                                )),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Directionality(
@@ -88,6 +136,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                             ),
                           ],
                         ),
+
                         const SizedBox(height: 12),
 
                         // Latin
@@ -95,8 +144,8 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                           ayah.latin,
                           style: const TextStyle(
                             fontSize: 14,
-                            color: Color(0xFF7B2CBF),
                             fontStyle: FontStyle.italic,
+                            color: Color(0xFF7B2CBF),
                           ),
                         ),
 
@@ -109,18 +158,46 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                             fontSize: 14,
                             color: Color(0xFF333333),
                           ),
-                          textAlign: TextAlign.left,
                         ),
 
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 12),
 
-                        // Aksi (Bookmark / Salin)
+                        // Tombol Audio
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                            Icon(Icons.bookmark_border, color: Colors.orange),
-                            SizedBox(width: 12),
-                            Icon(Icons.copy, color: Colors.blue),
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Play Arab
+                            ElevatedButton.icon(
+                              onPressed: () => _play(ayah.number, ayah.arab, true),
+                              icon: Icon(
+                                Icons.volume_up,
+                                color: isPlaying && _isArabic ? Colors.green : Colors.white,
+                              ),
+                              label: const Text("Arab"),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF219EBC),
+                              ),
+                            ),
+
+                            // Play Indo
+                            ElevatedButton.icon(
+                              onPressed: () => _play(ayah.number, ayah.translation, false),
+                              icon: Icon(
+                                Icons.volume_up,
+                                color: isPlaying && !_isArabic ? Colors.green : Colors.white,
+                              ),
+                              label: const Text("Indo"),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF219EBC),
+                              ),
+                            ),
+
+                            // Stop
+                            IconButton(
+                              icon: const Icon(Icons.stop_circle, color: Colors.red),
+                              onPressed: _stop,
+                              tooltip: 'Hentikan suara',
+                            ),
                           ],
                         ),
                       ],

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'app_routes.dart';
 import 'features/akuncreate/login.dart';
-import 'features/home/home.dart'; // ✅ pastikan path sesuai dengan file HomeScreen kamu
-import 'features/quran/alquran_screen.dart'; // ✅ pastikan path sesuai dengan file AlquranScreen kamu
+import 'features/home/home.dart';
+import 'features/quran/alquran_screen.dart';
+import 'features/hadist/hadith_screen.dart'; // ✅ tambahkan ini
 
 void main() {
   runApp(const Quranify());
@@ -16,10 +17,12 @@ class Quranify extends StatelessWidget {
     return MaterialApp(
       title: 'Quranify',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/', // Awal aplikasi di SplashScreen
+      initialRoute: '/', // SplashScreen pertama
       routes: {
+        AppRoutes.login: (_) => const LoginScreen(),
         AppRoutes.home: (_) => const HomeScreen(),
         AppRoutes.quran: (_) => const AlquranScreen(),
+        AppRoutes.hadith: (_) => const HadithScreen(), // ✅ tambahkan ini
       },
       onGenerateRoute: (settings) {
         if (settings.name == '/') {
@@ -53,7 +56,6 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     Future.delayed(const Duration(seconds: 3), () {
-      // Navigasi ke halaman login lewat routing
       Navigator.pushReplacementNamed(context, AppRoutes.login);
     });
   }

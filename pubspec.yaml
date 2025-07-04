@@ -11,7 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  http: ^1.4.0   # ✅ Tambahkan ini untuk API request
+  http: ^1.4.0   # ✅ Untuk API request
+  flutter_tts: ^3.8.3   # ✅ Untuk Text-to-Speech Hadist
+  shared_preferences: ^2.2.2
+  audioplayers: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -22,4 +25,4 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/   # ✅ Folder untuk semua gambar/icon
+    - assets/images/   # ✅ Folder gambar/icon

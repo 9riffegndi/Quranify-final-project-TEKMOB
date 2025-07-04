@@ -16,10 +16,10 @@ class Juz {
   factory Juz.fromJson(Map<String, dynamic> json) {
     return Juz(
       juzNumber: json['juz'],
-      startSurah: json['start']['surah'],
-      startAyah: json['start']['ayah'],
-      endSurah: json['end']['surah'],
-      endAyah: json['end']['ayah'],
+      startSurah: json['surahs']['start']['name'],
+      startAyah: json['ayahs']['start'],
+      endSurah: json['surahs']['end']['name'],
+      endAyah: json['ayahs']['end'],
     );
   }
 }

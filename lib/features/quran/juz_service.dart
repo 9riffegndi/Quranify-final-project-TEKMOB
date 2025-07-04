@@ -4,14 +4,17 @@ import 'juz_model.dart';
 
 class JuzService {
   static Future<List<Juz>> fetchJuzList() async {
-    final url = Uri.parse('https://equran.id/api/v2/juz');
-    final response = await http.get(url);
+    final resp = await http.get(Uri.parse('https://api.alquran.cloud/v1/meta'));
+    if (resp.statusCode == 200) {
+      final jsonData = json.decode(resp.body);
+      final juzMap = jsonData['data']['juzs'] as Map<String, dynamic>;
+      
+      final List<Juz> juzList = [];
+      juzMap.forEach((key, value) {
+        juzList.add(Juz.fromJson(value..['juz'] = int.parse(key)));
+      });
 
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      final List data = jsonData['data'];
-
-      return data.map((e) => Juz.fromJson(e)).toList();
+      return juzList;
     } else {
       throw Exception('Gagal memuat data Juz');
     }

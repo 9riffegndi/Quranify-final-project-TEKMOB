@@ -31,9 +31,9 @@ class _JuzScreenState extends State<JuzScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Gagal: ${snapshot.error}'));
-          } else if (!snapshot.hasData) {
-            return const Center(child: Text('Tidak ada data'));
+            return Center(child: Text('Gagal memuat Juz: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('Tidak ada data Juz'));
           }
 
           final juzList = snapshot.data!;
@@ -56,8 +56,9 @@ class _JuzScreenState extends State<JuzScreen> {
                   subtitle: Text(
                     'Dari: ${juz.startSurah} ayat ${juz.startAyah} \n'
                     'Sampai: ${juz.endSurah} ayat ${juz.endAyah}',
+                    style: const TextStyle(fontSize: 14),
                   ),
-                  trailing: const Icon(Icons.arrow_forward_ios, color: Color(0xFF219EBC), size: 18),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 18, color: Color(0xFF219EBC)),
                   onTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Kamu memilih Juz ${juz.juzNumber}')),

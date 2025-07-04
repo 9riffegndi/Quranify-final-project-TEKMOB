@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quranify/app_routes.dart'; // pastikan ini sesuai path AppRoutes kamu
+import 'package:quranify/app_routes.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -15,6 +15,8 @@ class HomeScreen extends StatelessWidget {
         onTap: (index) {
           if (index == 1) {
             Navigator.pushNamed(context, AppRoutes.quran);
+          } else if (index == 2) {
+            Navigator.pushNamed(context, AppRoutes.hadith);
           }
         },
         items: const [
@@ -27,6 +29,7 @@ class HomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // Header
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
@@ -44,23 +47,11 @@ class HomeScreen extends StatelessWidget {
                     backgroundImage: AssetImage('assets/images/profile.png'),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    '16 Rabiul Awal 1445 H',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                  const Text(
-                    'Bantul, Yogyakarta',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  const Text('16 Rabiul Awal 1445 H', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  const Text('Bantul, Yogyakarta', style: TextStyle(color: Colors.white)),
                   const SizedBox(height: 16),
-                  const Text(
-                    '14.30',
-                    style: TextStyle(color: Colors.white, fontSize: 36, fontWeight: FontWeight.bold),
-                  ),
-                  const Text(
-                    'Maghrib 3 jam 3 menit lagi',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  const Text('14.30', style: TextStyle(color: Colors.white, fontSize: 36, fontWeight: FontWeight.bold)),
+                  const Text('Maghrib 3 jam 3 menit lagi', style: TextStyle(color: Colors.white)),
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -76,6 +67,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
+            // Tombol Ngaji
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: ElevatedButton(
@@ -87,14 +79,14 @@ class HomeScreen extends StatelessWidget {
                   foregroundColor: const Color(0xFF219EBC),
                   side: const BorderSide(color: Color(0xFF219EBC)),
                   minimumSize: const Size(double.infinity, 48),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 child: const Text('Ngaji Yuk!!', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
             const SizedBox(height: 20),
+
+            // Hadist favorit
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
@@ -106,34 +98,42 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFFDFF5F3),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.all(12),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '“Ketika Nabi ﷺ masuk ke dalam Ka\'bah, beliau berdoa di seluruh sisinya dan tidak melakukan salat hingga beliau keluar darinya...”',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Text(
-                        '389/893 | HR Bukhari',
-                        style: TextStyle(color: Colors.teal, fontWeight: FontWeight.w500),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.hadith);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFDFF5F3),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.all(12),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '“Ketika Nabi ﷺ masuk ke dalam Ka\'bah, beliau berdoa di seluruh sisinya dan tidak melakukan salat hingga beliau keluar darinya...”',
+                        style: TextStyle(fontSize: 14),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 8),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Text(
+                          '389/893 | HR Bukhari',
+                          style: TextStyle(color: Colors.teal, fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
+
             const SizedBox(height: 20),
+
+            // Ngaji Online
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
