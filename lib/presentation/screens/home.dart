@@ -5,6 +5,7 @@ import 'dart:async';
 import '../../../data/models/user_model.dart';
 import '../../../data/services/auth_service.dart';
 import '../../../routes/routes.dart';
+import '../../../data/services/quran/bookmark_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,12 +16,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _authService = AuthService();
+  final BookmarkService _bookmarkService =
+      BookmarkService(); // Added bookmark service
   UserModel? _user;
   bool _isGuest = false;
   bool _isLoading = true;
   String _currentTime = '';
   late Timer _timer;
   int _currentIndex = 0; // For bottom navigation bar
+  List<Map<String, dynamic>> _bookmarks = []; // Store bookmarks
+  bool _loadingBookmarks = true; // Track loading state
 
   // Prayer times - in real app would be fetched from API
   final Map<String, String> _prayerTimes = {
@@ -35,8 +40,32 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadUserData();
+    _loadBookmarks(); // Load bookmarks
     _updateTime();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _updateTime());
+  }
+
+  // Load bookmarks from service
+  Future<void> _loadBookmarks() async {
+    setState(() {
+      _loadingBookmarks = true;
+    });
+    try {
+      final bookmarks = await _bookmarkService.getBookmarks();
+      setState(() {
+        _bookmarks = bookmarks;
+        _loadingBookmarks = false;
+      });
+    } catch (e) {
+      setState(() {
+        _loadingBookmarks = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load bookmarks: ${e.toString()}')),
+        );
+      }
+    }
   }
 
   @override
@@ -563,49 +592,76 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Today's reminder
+                                  // Bookmarks Horizontal List
                                   Container(
                                     width: double.infinity,
-                                    padding: const EdgeInsets.all(16),
-                                    margin: const EdgeInsets.only(bottom: 16),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFF1F8F9),
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.03),
-                                          blurRadius: 8,
-                                          offset: const Offset(0, 2),
-                                        ),
-                                      ],
+                                    margin: const EdgeInsets.only(
+                                      bottom: 16,
+                                      top: 20,
                                     ),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         const Text(
-                                          'Today\'s Reminder',
+                                          'Ditandai',
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
+                                            color: Color(0xFF219EBC),
                                           ),
                                         ),
                                         const SizedBox(height: 8),
-                                        const Text(
-                                          'Whoever guides someone to goodness will have a reward like one who did it.',
-                                          style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        const Text(
-                                          '- Sahih Muslim',
-                                          textAlign: TextAlign.right,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                        SizedBox(
+                                          height: 80,
+                                          child: _loadingBookmarks
+                                              ? const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                        color: Color(
+                                                          0xFF219EBC,
+                                                        ),
+                                                      ),
+                                                )
+                                              : _bookmarks.isEmpty
+                                              ? const Center(
+                                                  child: Text(
+                                                    'Belum ada ayat yang ditandai',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                )
+                                              : ListView.builder(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: _bookmarks.length,
+                                                  itemBuilder: (context, index) {
+                                                    final bookmark =
+                                                        _bookmarks[index];
+                                                    return BookmarkItem(
+                                                      surahName:
+                                                          bookmark['surahName'],
+                                                      surahNumber:
+                                                          bookmark['surahNumber'],
+                                                      ayatNumber:
+                                                          bookmark['ayatNumber'],
+                                                      onTap: () {
+                                                        Navigator.pushNamed(
+                                                          context,
+                                                          AppRoutes.detailSurah,
+                                                          arguments: {
+                                                            'surahNumber':
+                                                                bookmark['surahNumber'],
+                                                            'ayatNumber':
+                                                                bookmark['ayatNumber'],
+                                                          },
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                ),
                                         ),
                                       ],
                                     ),

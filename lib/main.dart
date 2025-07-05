@@ -85,39 +85,50 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Quranify',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: const Color(0xFF219EBC),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF219EBC),
-          primary: const Color(0xFF219EBC),
-        ),
-        scaffoldBackgroundColor: Colors.white,
-        fontFamily: 'Poppins',
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(const Color(0xFF219EBC)),
-            foregroundColor: MaterialStateProperty.all(Colors.white),
-          ),
-        ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all(const Color(0xFF219EBC)),
-            side: MaterialStateProperty.all(
-              const BorderSide(color: Color(0xFF219EBC)),
+    return FutureBuilder<String>(
+      future: AppRoutes.getInitialRoute(),
+      builder: (context, snapshot) {
+        return MaterialApp(
+          title: 'Quranify',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primaryColor: const Color(0xFF219EBC),
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color(0xFF219EBC),
+              primary: const Color(0xFF219EBC),
+            ),
+            scaffoldBackgroundColor: Colors.white,
+            fontFamily: 'Poppins',
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                  const Color(0xFF219EBC),
+                ),
+                foregroundColor: MaterialStateProperty.all(Colors.white),
+              ),
+            ),
+            outlinedButtonTheme: OutlinedButtonThemeData(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all(
+                  const Color(0xFF219EBC),
+                ),
+                side: MaterialStateProperty.all(
+                  const BorderSide(color: Color(0xFF219EBC)),
+                ),
+              ),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all(
+                  const Color(0xFF219EBC),
+                ),
+              ),
             ),
           ),
-        ),
-        textButtonTheme: TextButtonThemeData(
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all(const Color(0xFF219EBC)),
-          ),
-        ),
-      ),
-      initialRoute: AppRoutes.splash,
-      onGenerateRoute: AppRoutes.generateRoute,
+          initialRoute: snapshot.data ?? AppRoutes.splash,
+          onGenerateRoute: AppRoutes.generateRoute,
+        );
+      },
     );
   }
 }

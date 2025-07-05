@@ -5,6 +5,7 @@ import '../presentation/screens//home.dart';
 import '../presentation/screens/splashscreen.dart';
 import '../presentation/screens/alquran/surahs.dart';
 import '../presentation/screens/alquran/detail_surahs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppRoutes {
   // Route names
@@ -20,6 +21,11 @@ class AppRoutes {
 
   // Route generator
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    // Save the current route whenever navigation happens (except for splash screen)
+    if (settings.name != null && settings.name != splash) {
+      saveCurrentRoute(settings.name!);
+    }
+
     switch (settings.name) {
       case splash:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
@@ -82,8 +88,26 @@ class AppRoutes {
     }
   }
 
-  // We always start with the splash screen now
+  // Store the current route to maintain it on refresh
+  static Future<void> saveCurrentRoute(String route) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('current_route', route);
+  }
+
+  // Get the stored route or default to splash screen
   static Future<String> getInitialRoute() async {
-    return splash;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final storedRoute = prefs.getString('current_route');
+
+      // If no stored route or it's the splash route, return splash
+      // Otherwise return the stored route
+      return storedRoute != null && storedRoute != splash
+          ? storedRoute
+          : splash;
+    } catch (e) {
+      // If any error occurs, default to splash screen
+      return splash;
+    }
   }
 }
