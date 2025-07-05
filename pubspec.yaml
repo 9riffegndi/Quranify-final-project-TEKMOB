@@ -16,6 +16,9 @@ dependencies:
   path_provider: ^2.1.5
   shared_preferences: ^2.5.3
   youtube_player_flutter: ^9.1.1
+  intl: ^0.20.2  # Untuk format tanggal dan waktu
+  http: ^1.4.0
+  url_launcher: ^6.0.0  # Untuk membuka URL di browser eksternal
 
 dev_dependencies:
   flutter_test:
@@ -26,4 +29,5 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/   # ✅ Folder gambar/icon
+    - assets/images/
+    - assets/daftarimage/

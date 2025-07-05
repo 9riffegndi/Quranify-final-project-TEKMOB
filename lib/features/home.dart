@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quranify/features/youtube_ngaji_card.dart';
+import 'package:quranify/features/home/youtube_ngaji_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -139,7 +139,23 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              const YoutubeNgajiCard(),
+              const YoutubeNgajiCard(
+                videoUrl: 'https://youtu.be/4rbO39alQRU?si=PZ4OEGwuqXI1B1kn',
+                title: 'Ngaji Online - Kajian Islam',
+                description: 'Kajian Islam terbaru yang bermanfaat',
+              ),
+              const SizedBox(height: 16),
+              const YoutubeNgajiCard(
+                videoUrl: 'https://youtu.be/dQw4w9WgXcQ',
+                title: 'Tafsir Al-Quran',
+                description: 'Memahami makna Al-Quran dengan lebih dalam',
+              ),
+              const SizedBox(height: 16),
+              const YoutubeNgajiCard(
+                videoUrl: 'https://youtu.be/ScMzIvxBSi4',
+                title: 'Hadist Pilihan',
+                description: 'Hadist-hadist pilihan yang mudah dipahami',
+              ),
               const SizedBox(height: 16),
              Container(
   width: screenWidth,
