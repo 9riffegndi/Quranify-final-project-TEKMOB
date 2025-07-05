@@ -5,6 +5,7 @@ import '../presentation/screens//home.dart';
 import '../presentation/screens/splashscreen.dart';
 import '../presentation/screens/alquran/surahs.dart';
 import '../presentation/screens/alquran/detail_surahs.dart';
+import '../presentation/screens/hadith/hadist.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppRoutes {
@@ -47,6 +48,7 @@ class AppRoutes {
           ),
         );
       case hadist:
+        return MaterialPageRoute(builder: (_) => const HadistScreen());
       case profile:
         // Temporary placeholder until screens are created
         return MaterialPageRoute(

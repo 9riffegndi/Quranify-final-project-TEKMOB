@@ -288,6 +288,38 @@ class _SurahsScreenState extends State<SurahsScreen>
                       ),
                     );
                   },
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete_outline, color: Colors.red),
+                    onPressed: () async {
+                      final confirmed = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Hapus Bookmark'),
+                          content: const Text(
+                            'Apakah Anda yakin ingin menghapus bookmark ini?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              child: const Text('Batal'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              child: const Text('Hapus'),
+                            ),
+                          ],
+                        ),
+                      );
+
+                      if (confirmed == true) {
+                        await _bookmarkService.removeBookmark(
+                          surahNumber: bookmark['surahNumber'],
+                          ayatNumber: bookmark['ayatNumber'],
+                        );
+                        _loadBookmarks(); // Refresh bookmarks
+                      }
+                    },
+                  ),
                 ),
               );
             },
@@ -390,6 +422,37 @@ class _SurahsScreenState extends State<SurahsScreen>
                                             ),
                                       ),
                                     );
+                                  },
+                                  onDelete: () async {
+                                    final confirmed = await showDialog<bool>(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: const Text('Hapus Bookmark'),
+                                        content: const Text(
+                                          'Apakah Anda yakin ingin menghapus bookmark ini?',
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, false),
+                                            child: const Text('Batal'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, true),
+                                            child: const Text('Hapus'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+
+                                    if (confirmed == true) {
+                                      await _bookmarkService.removeBookmark(
+                                        surahNumber: bookmark['surahNumber'],
+                                        ayatNumber: bookmark['ayatNumber'],
+                                      );
+                                      _loadBookmarks(); // Refresh bookmarks
+                                    }
                                   },
                                 );
                               },
@@ -585,6 +648,7 @@ class BookmarkItem extends StatelessWidget {
   final int surahNumber;
   final int ayatNumber;
   final VoidCallback onTap;
+  final VoidCallback? onDelete;
 
   const BookmarkItem({
     Key? key,
@@ -592,6 +656,7 @@ class BookmarkItem extends StatelessWidget {
     required this.surahNumber,
     required this.ayatNumber,
     required this.onTap,
+    this.onDelete,
   }) : super(key: key);
 
   @override
@@ -618,15 +683,31 @@ class BookmarkItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                surahName,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF219EBC),
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      surahName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF219EBC),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  if (onDelete != null)
+                    InkWell(
+                      onTap: onDelete,
+                      child: const Icon(
+                        Icons.close,
+                        size: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                ],
               ),
               const SizedBox(height: 4),
               Text(

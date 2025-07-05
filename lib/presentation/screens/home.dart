@@ -277,16 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       case 2:
         // Hadist screen
-        ScaffoldMessenger.of(
-          context,
-        ).clearSnackBars(); // Clear any existing snackbars
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Hadist screen needs to be created'),
-            duration: Duration(seconds: 1),
-          ),
-        );
-        // When implemented: Navigator.pushNamed(context, AppRoutes.hadist);
+        Navigator.pushNamed(context, AppRoutes.hadist);
         break;
       case 3:
         // Profile screen
