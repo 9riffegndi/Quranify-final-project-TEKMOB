@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  youtube_player_flutter: ^8.1.0 
 
 dev_dependencies:
   flutter_test:

@@ -108,7 +108,7 @@ class _DaftarScreenState extends State<DaftarScreen> {
                       },
                     ),
                     const Text(
-                      'Simpan Akun',
+                      'saya menyetujui syarat dan ketentuan',
                       style: TextStyle(
                         color: Color(0xFF114F5E),
                         fontSize: 12,

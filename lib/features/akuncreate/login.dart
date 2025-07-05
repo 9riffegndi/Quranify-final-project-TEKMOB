@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:quranify/features/akuncreate/daftar.dart' show DaftarScreen;
+import 'package:quranify/features/home.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -102,6 +104,10 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               onPressed: () {
                 // Tambahkan aksi login di sini
+                 Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => const HomeScreen()),
+  );
               },
               child: const Text(
                 'Masuk',
