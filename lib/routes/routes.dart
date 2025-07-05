@@ -6,6 +6,7 @@ import '../presentation/screens/splashscreen.dart';
 import '../presentation/screens/alquran/surahs.dart';
 import '../presentation/screens/alquran/detail_surahs.dart';
 import '../presentation/screens/hadith/hadist.dart';
+import '../presentation/screens/hadith/detail_hadith.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppRoutes {
@@ -18,6 +19,7 @@ class AppRoutes {
   static const String quran = '/quran';
   static const String detailSurah = '/detail-surah';
   static const String hadist = '/hadist';
+  static const String detailHadith = '/detail-hadith';
   static const String profile = '/profile';
 
   // Route generator
@@ -49,6 +51,14 @@ class AppRoutes {
         );
       case hadist:
         return MaterialPageRoute(builder: (_) => const HadistScreen());
+      case detailHadith:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => DetailHadithScreen(
+            bookId: args['bookId'],
+            hadithNumber: args['hadithNumber'],
+          ),
+        );
       case profile:
         // Temporary placeholder until screens are created
         return MaterialPageRoute(
