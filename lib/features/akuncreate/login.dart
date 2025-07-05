@@ -1,13 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import 'package:quranify/features/akuncreate/daftar.dart' show DaftarScreen;
-import 'package:quranify/features/home.dart';
-
-=======
 import '../home/home.dart';
 import 'daftar.dart';
->>>>>>> 28c93fc7073dcbd3e374fcd60304384f28f4f43b
 
 class LoginScreen extends StatefulWidget {
   final String? defaultUsername;
@@ -84,82 +78,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-<<<<<<< HEAD
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: _rememberMe,
-                      onChanged: (val) {
-                        setState(() {
-                          _rememberMe = val ?? false;
-                        });
-                      },
-                    ),
-                    const Text(
-                      'Simpan Akun',
-                      style: TextStyle(
-                        color: Color(0xFF114F5E),
-                        fontSize: 12,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          // Tombol Login
-          Positioned(
-            left: 62,
-            right: 62,
-            top: screenHeight * 0.60,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF219EBC),
-                minimumSize: const Size(double.infinity, 49),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              onPressed: () {
-                // Tambahkan aksi login di sini
-                 Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context) => const HomeScreen()),
-  );
-              },
-              child: const Text(
-                'Masuk',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  color: Color(0xFFFFFFFF),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          ),
-          // Divider dan "Atau masuk dengan"
-          Positioned(
-            left: 19,
-            right: 19,
-            top: screenHeight * 0.72,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Expanded(
-                      child: Divider(
-                        color: Color(0xFFD9D9D9),
-                        thickness: 1,
-                      ),
-                    ),
-                    Container(
-=======
                   onPressed: () {
                     final username = usernameController.text.trim();
                     final password = passwordController.text;
@@ -178,7 +96,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: const Text(
                     'Masuk',
                     style: TextStyle(
->>>>>>> 28c93fc7073dcbd3e374fcd60304384f28f4f43b
                       color: Colors.white,
                       fontSize: 16,
                       fontFamily: 'Poppins',
