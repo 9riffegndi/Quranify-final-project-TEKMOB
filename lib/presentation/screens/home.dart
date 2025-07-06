@@ -162,18 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> _logout() async {
-    try {
-      await _authService.logout();
-      if (!mounted) return;
-      Navigator.pushReplacementNamed(context, AppRoutes.login);
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Logout failed: ${e.toString()}')));
-    }
-  }
+  // Logout method removed
 
   String _getProfileInitial() {
     if (_isGuest) return 'G';
@@ -1146,35 +1135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
 
-                                  // Logout button at the bottom of the page
-                                  const SizedBox(height: 24),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: ElevatedButton(
-                                      onPressed: _logout,
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(
-                                          0xFF219EBC,
-                                        ),
-                                        foregroundColor: Colors.white,
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 12,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        'Logout',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  // Space at the bottom for better UI spacing
                                   // Add additional bottom padding
                                   const SizedBox(height: 110),
                                 ],
