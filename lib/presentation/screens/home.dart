@@ -58,11 +58,26 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadUserData();
-    _loadBookmarks(); // Load Quran bookmarks
-    _loadHadithBookmarks(); // Load Hadith bookmarks
-    _loadYoutubeVideos(); // Load YouTube videos
+    // Delay loading of resources to prevent too many WebGL contexts
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) {
+        _loadBookmarks(); // Load Quran bookmarks
+      }
+    });
+    Future.delayed(const Duration(milliseconds: 600), () {
+      if (mounted) {
+        _loadHadithBookmarks(); // Load Hadith bookmarks
+      }
+    });
+    Future.delayed(const Duration(milliseconds: 900), () {
+      if (mounted) {
+        _loadYoutubeVideos(); // Load YouTube videos
+      }
+    });
+
     _updateTime();
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) => _updateTime());
+    // Update time every 5 seconds instead of every second to reduce WebGL contexts
+    _timer = Timer.periodic(const Duration(seconds: 5), (_) => _updateTime());
   }
 
   // Load bookmarks from service
@@ -454,12 +469,12 @@ class _HomeScreenState extends State<HomeScreen> {
         Navigator.pushNamed(context, AppRoutes.quran);
         break;
       case 2:
-        // Hadist screen
-        Navigator.pushNamed(context, AppRoutes.hadist);
-        break;
-      case 3:
         // Fun Learn screen
         Navigator.pushNamed(context, AppRoutes.funLearn);
+        break;
+      case 3:
+        // Hadist screen
+        Navigator.pushNamed(context, AppRoutes.hadist);
         break;
       case 4:
         // Profile screen
@@ -488,7 +503,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return [
                   SliverAppBar(
                     expandedHeight:
-                        320.0, // Increased height for better mobile display
+                        310.0, // Increased height for status bar and better mobile display
                     floating: false,
                     pinned: true,
                     backgroundColor: const Color(0xFF219EBC),
@@ -520,201 +535,212 @@ class _HomeScreenState extends State<HomeScreen> {
                             colorBlendMode: BlendMode.srcIn,
                           ),
                           // Header content
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Top header section
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Left side: User profile with Hijri date & location to the right
-                                    Row(
-                                      children: [
-                                        // User profile initial with tap to navigate to profile
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                              context,
-                                              AppRoutes.profile,
-                                            );
-                                          },
-                                          child: CircleAvatar(
-                                            radius: 24,
-                                            backgroundColor: Colors.white,
-                                            child: Text(
-                                              _getProfileInitial(),
-                                              style: const TextStyle(
-                                                fontSize: 20,
-                                                color: Color(0xFF219EBC),
-                                                fontWeight: FontWeight.bold,
+                          SafeArea(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                16.0,
+                                24.0,
+                                16.0,
+                                16.0,
+                              ), // Added extra top padding for status bar
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Top header section
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Left side: User profile with Hijri date & location to the right
+                                      Row(
+                                        children: [
+                                          // User profile initial with tap to navigate to profile
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                context,
+                                                AppRoutes.profile,
+                                              );
+                                            },
+                                            child: CircleAvatar(
+                                              radius: 24,
+                                              backgroundColor: Colors.white,
+                                              child: Text(
+                                                _getProfileInitial(),
+                                                style: const TextStyle(
+                                                  fontSize: 20,
+                                                  color: Color(0xFF219EBC),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        const SizedBox(width: 12),
-                                        // Hijri date and location to the right of profile
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            // Hijri date
-                                            Text(
-                                              _getHijriDate(),
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 13,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 4),
-                                            // Location directly below Hijri date
-                                            Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.location_on,
+                                          const SizedBox(width: 12),
+                                          // Hijri date and location to the right of profile
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              // Hijri date
+                                              Text(
+                                                _getHijriDate(),
+                                                style: const TextStyle(
                                                   color: Colors.white,
-                                                  size: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 13,
                                                 ),
-                                                const SizedBox(width: 4),
-                                                const Text(
-                                                  'Bantul, Yogyakarta',
-                                                  style: TextStyle(
+                                              ),
+                                              const SizedBox(height: 4),
+                                              // Location directly below Hijri date
+                                              Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons.location_on,
                                                     color: Colors.white,
-                                                    fontSize: 12,
+                                                    size: 14,
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-
-                                    // Right side: Notification
-                                    Container(
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: const Icon(
-                                        Icons.notifications,
-                                        color: Colors.white,
-                                        size: 24,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                // Center section with time and next prayer
-                                Expanded(
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        // Current time in large display
-                                        Text(
-                                          _currentTime,
-                                          style: const TextStyle(
-                                            fontSize:
-                                                42, // Reduced from 48 to prevent overflow
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 12,
-                                        ), // Reduced spacing
-                                        // Next prayer time
-                                        const SizedBox(height: 4),
-                                        FutureBuilder<String>(
-                                          future: Future.value(
-                                            _getNextPrayerTimeCalculated(),
-                                          ),
-                                          builder: (context, snapshot) {
-                                            // Get the prayer time text
-                                            String prayerTimeText =
-                                                snapshot.data ??
-                                                _getNextPrayerTime();
-
-                                            return Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.access_time,
+                                                  const SizedBox(width: 4),
+                                                  const Text(
+                                                    'Bantul, Yogyakarta',
+                                                    style: TextStyle(
                                                       color: Colors.white,
-                                                      size: 16,
+                                                      fontSize: 12,
                                                     ),
-                                                    const SizedBox(width: 4),
-                                                    // Use Flexible to prevent text overflow
-                                                    Flexible(
-                                                      child: Text(
-                                                        prayerTimeText,
-                                                        style: const TextStyle(
-                                                          fontSize:
-                                                              16, // Reduced from 18 to prevent overflow
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.white,
-                                                        ),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
 
-                                                // Prayer Times section below next prayer - column layout with icons
-                                                const SizedBox(height: 16),
-                                                Container(
-                                                  height:
-                                                      65, // Further increased height for better visibility
-                                                  child: Row(
+                                      // Right side: Notification
+                                      Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                        ),
+                                        child: const Icon(
+                                          Icons.notifications,
+                                          color: Colors.white,
+                                          size: 24,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  // Center section with time and next prayer
+                                  Expanded(
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          // Current time in large display
+                                          Text(
+                                            _currentTime,
+                                            style: const TextStyle(
+                                              fontSize:
+                                                  42, // Reduced from 48 to prevent overflow
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 12,
+                                          ), // Reduced spacing
+                                          // Next prayer time
+                                          const SizedBox(height: 4),
+                                          FutureBuilder<String>(
+                                            future: Future.value(
+                                              _getNextPrayerTimeCalculated(),
+                                            ),
+                                            builder: (context, snapshot) {
+                                              // Get the prayer time text
+                                              String prayerTimeText =
+                                                  snapshot.data ??
+                                                  _getNextPrayerTime();
+
+                                              return Column(
+                                                children: [
+                                                  Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
-                                                            .spaceEvenly,
+                                                            .center,
                                                     children: [
-                                                      _buildCompactPrayerTime(
-                                                        'Subuh',
-                                                        _prayerTimes['Subuh']!,
+                                                      const Icon(
+                                                        Icons.access_time,
+                                                        color: Colors.white,
+                                                        size: 16,
                                                       ),
-                                                      _buildCompactPrayerTime(
-                                                        'Dzuhur',
-                                                        _prayerTimes['Dzuhur']!,
-                                                      ),
-                                                      _buildCompactPrayerTime(
-                                                        'Ashar',
-                                                        _prayerTimes['Ashar']!,
-                                                      ),
-                                                      _buildCompactPrayerTime(
-                                                        'Maghrib',
-                                                        _prayerTimes['Maghrib']!,
-                                                      ),
-                                                      _buildCompactPrayerTime(
-                                                        'Isya',
-                                                        _prayerTimes['Isya']!,
+                                                      const SizedBox(width: 4),
+                                                      // Use Flexible to prevent text overflow
+                                                      Flexible(
+                                                        child: Text(
+                                                          prayerTimeText,
+                                                          style: const TextStyle(
+                                                            fontSize:
+                                                                16, // Reduced from 18 to prevent overflow
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors.white,
+                                                          ),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        ),
-                                      ],
+
+                                                  // Prayer Times section below next prayer - column layout with icons
+                                                  const SizedBox(height: 16),
+                                                  Container(
+                                                    height:
+                                                        65, // Further increased height for better visibility
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        _buildCompactPrayerTime(
+                                                          'Subuh',
+                                                          _prayerTimes['Subuh']!,
+                                                        ),
+                                                        _buildCompactPrayerTime(
+                                                          'Dzuhur',
+                                                          _prayerTimes['Dzuhur']!,
+                                                        ),
+                                                        _buildCompactPrayerTime(
+                                                          'Ashar',
+                                                          _prayerTimes['Ashar']!,
+                                                        ),
+                                                        _buildCompactPrayerTime(
+                                                          'Maghrib',
+                                                          _prayerTimes['Maghrib']!,
+                                                        ),
+                                                        _buildCompactPrayerTime(
+                                                          'Isya',
+                                                          _prayerTimes['Isya']!,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
 
-                                // Gregorian date removed
-                              ],
+                                  // Gregorian date removed
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -737,12 +763,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ), // Space for search bar
                     child: Container(
                       width: double.infinity,
-                      // Use constraints to fit content rather than infinite height
-                      constraints: BoxConstraints(
-                        minHeight:
-                            MediaQuery.of(context).size.height -
-                            190, // Account for app bar and bottom nav
-                      ),
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.vertical(
@@ -751,9 +771,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           ), // Proper rounded top corners
                         ),
                       ),
+                      // Let the content determine the height
                       child: SingleChildScrollView(
                         // Increased bottom padding to ensure content isn't covered by bottom nav bar
-                        padding: const EdgeInsets.only(bottom: 100),
+                        padding: const EdgeInsets.only(bottom: 0),
                         child: Column(
                           mainAxisSize:
                               MainAxisSize.min, // Use min size to fit content
@@ -1400,31 +1421,45 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         ),
                                                       ),
                                                 )
-                                              : ListView.builder(
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemCount:
-                                                      _youtubeVideos.length,
-                                                  itemBuilder: (context, index) {
-                                                    final video =
-                                                        _youtubeVideos[index];
-                                                    return YouTubeVideoItem(
-                                                      thumbnailUrl:
-                                                          video['thumbnailUrl'] ??
-                                                          '',
-                                                      title:
-                                                          video['title'] ??
-                                                          'Video',
-                                                      channelName:
-                                                          video['channelName'] ??
-                                                          'Channel',
-                                                      duration:
-                                                          video['duration'] ??
-                                                          '0:00',
-                                                      videoId:
-                                                          video['id'] ?? '',
-                                                    );
-                                                  },
+                                              : NotificationListener<
+                                                  ScrollNotification
+                                                >(
+                                                  onNotification:
+                                                      (
+                                                        ScrollNotification
+                                                        scrollInfo,
+                                                      ) {
+                                                        // You can add scroll optimization logic here if needed
+                                                        return false;
+                                                      },
+                                                  child: ListView.builder(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    itemCount:
+                                                        _youtubeVideos.length,
+                                                    cacheExtent:
+                                                        300, // Cache items ahead of rendering
+                                                    itemBuilder: (context, index) {
+                                                      final video =
+                                                          _youtubeVideos[index];
+                                                      return YouTubeVideoItem(
+                                                        thumbnailUrl:
+                                                            video['thumbnailUrl'] ??
+                                                            '',
+                                                        title:
+                                                            video['title'] ??
+                                                            'Video',
+                                                        channelName:
+                                                            video['channelName'] ??
+                                                            'Channel',
+                                                        duration:
+                                                            video['duration'] ??
+                                                            '0:00',
+                                                        videoId:
+                                                            video['id'] ?? '',
+                                                      );
+                                                    },
+                                                  ),
                                                 ),
                                         ),
                                       ],
@@ -1447,12 +1482,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       // Search bar
                       Positioned(
-                        top: 0,
+                        top:
+                            5, // Added top margin for better spacing with content
                         left: 0,
                         right: 0,
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                          height: 45,
+                          height:
+                              48, // Slightly increased height for better touch target
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(
@@ -1728,39 +1765,64 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+        // Use SafeArea to account for system navigation bar
         child: SafeArea(
-          child: BottomNavigationBar(
-            elevation: 8,
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.white,
-            currentIndex: _currentIndex,
-            selectedItemColor: const Color(0xFF219EBC),
-            unselectedItemColor: Colors.grey,
-            selectedLabelStyle: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
+          // Add bottom padding specifically for system navigation bar
+          bottom: true,
+          child: Padding(
+            // Extra padding at the bottom to ensure space from system navigation
+            padding: const EdgeInsets.only(bottom: 8),
+            child: BottomNavigationBar(
+              elevation: 8,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.white,
+              currentIndex: _currentIndex,
+              selectedItemColor: const Color(0xFF219EBC),
+              unselectedItemColor: Colors.grey,
+              // Increase font size and padding for better visibility
+              selectedLabelStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+              unselectedLabelStyle: const TextStyle(fontSize: 12),
+              // Add more vertical padding for better touch targets
+              iconSize: 26,
+              onTap: _onNavItemTapped,
+              items: [
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.menu_book),
+                  label: 'Al Quran',
+                ),
+                // Center the Fun Learn item with a circular background
+                BottomNavigationBarItem(
+                  icon: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF219EBC),
+                      shape: BoxShape.circle, // radius full
+                    ),
+                    child: Icon(
+                      Icons.school,
+                      size: 24,
+                      color: Colors.white, // opsional: biar kontras
+                    ),
+                  ),
+                  label: 'Fun Learn',
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.history_edu),
+                  label: 'Hadist',
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.person),
+                  label: 'Profile',
+                ),
+              ],
             ),
-            unselectedLabelStyle: const TextStyle(fontSize: 12),
-            onTap: _onNavItemTapped,
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.menu_book),
-                label: 'Al Quran',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.history_edu),
-                label: 'Hadist',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.school),
-                label: 'Fun Learn',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
-            ],
           ),
         ),
       ),
@@ -1976,13 +2038,14 @@ class YouTubeVideoItem extends StatelessWidget {
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(12),
                   ),
-                  child: Image.network(
-                    thumbnailUrl,
+                  child: FadeInImage.assetNetwork(
+                    placeholder: 'assets/images/placeholder_thumbnail.png',
+                    image: thumbnailUrl,
                     height: 130, // Reduced height to prevent overflow
                     width: double.infinity,
                     fit: BoxFit.cover,
-                    // Placeholder and error handling
-                    errorBuilder: (context, error, stackTrace) {
+                    fadeInDuration: const Duration(milliseconds: 300),
+                    imageErrorBuilder: (context, error, stackTrace) {
                       return Container(
                         height: 130,
                         color: Colors.grey[300],
@@ -1991,18 +2054,6 @@ class YouTubeVideoItem extends StatelessWidget {
                             Icons.image_not_supported,
                             size: 40,
                             color: Colors.grey,
-                          ),
-                        ),
-                      );
-                    },
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Container(
-                        height: 130,
-                        color: Colors.grey[200],
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            color: Color(0xFF219EBC),
                           ),
                         ),
                       );

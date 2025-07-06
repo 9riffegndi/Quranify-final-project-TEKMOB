@@ -15,29 +15,55 @@ class YouTubePlayerScreen extends StatefulWidget {
   State<YouTubePlayerScreen> createState() => _YouTubePlayerScreenState();
 }
 
-class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
+class _YouTubePlayerScreenState extends State<YouTubePlayerScreen>
+    with AutomaticKeepAliveClientMixin {
   late YoutubePlayerController _controller;
   late bool _isPlayerReady;
+  bool _controllerInitialized = false;
 
   @override
   void initState() {
     super.initState();
     _isPlayerReady = false;
-    _controller = YoutubePlayerController(
-      initialVideoId: widget.videoId,
-      flags: const YoutubePlayerFlags(
-        autoPlay: true,
-        mute: false,
-        enableCaption: true,
-      ),
-    )..addListener(_listener);
+    // Delayed initialization to prevent too many WebGL contexts
+    Future.delayed(Duration(milliseconds: 300), () {
+      if (mounted) {
+        _controller = YoutubePlayerController(
+          initialVideoId: widget.videoId,
+          flags: const YoutubePlayerFlags(
+            autoPlay: true,
+            mute: false,
+            enableCaption: true,
+            forceHD:
+                false, // Prevent forcing HD which creates more WebGL contexts
+            disableDragSeek: false, // Allow seeking
+          ),
+        )..addListener(_listener);
+
+        if (mounted) {
+          setState(() {
+            _controllerInitialized = true;
+          });
+        }
+      }
+    });
   }
 
   void _listener() {
     if (_isPlayerReady && mounted && !_controller.value.isFullScreen) {
-      setState(() {});
+      // Limit setState calls to prevent excessive rendering
+      // Only update on important changes
+      if (_controller.value.isPlaying ||
+          _controller.value.playerState == PlayerState.ended ||
+          _controller.value.playerState == PlayerState.paused) {
+        setState(() {});
+      }
     }
   }
+
+  // Keep player alive when navigating away temporarily
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void dispose() {
@@ -76,10 +102,7 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
               widget.title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
         ],
