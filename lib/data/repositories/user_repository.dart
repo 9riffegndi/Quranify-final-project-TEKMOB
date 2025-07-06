@@ -105,6 +105,8 @@ class UserRepository {
     String? username,
     String? email,
     String? password,
+    String? city,
+    DateTime? birthDate,
   }) async {
     final userData = await StorageService.getObject(_userKey);
 
@@ -127,7 +129,7 @@ class UserRepository {
       }
     }
 
-    // Update user data
+    // Create updated user
     final updatedUser = currentUser.copyWith(
       fullName: fullName,
       username: username,
@@ -135,9 +137,37 @@ class UserRepository {
       password: password,
     );
 
+    // For city and birth date, store in additional preferences
+    if (city != null) {
+      await StorageService.saveString('${_userKey}_city', city);
+    }
+
+    if (birthDate != null) {
+      await StorageService.saveString(
+        '${_userKey}_birthdate',
+        birthDate.toIso8601String(),
+      );
+    }
+
     await StorageService.saveObject(_userKey, updatedUser.toJson());
 
     return updatedUser;
+  }
+
+  // Get user city
+  Future<String?> getUserCity() async {
+    return await StorageService.getString('${_userKey}_city');
+  }
+
+  // Get user birth date
+  Future<DateTime?> getUserBirthDate() async {
+    final dateStr = await StorageService.getString('${_userKey}_birthdate');
+    if (dateStr == null) return null;
+    try {
+      return DateTime.parse(dateStr);
+    } catch (e) {
+      return null;
+    }
   }
 
   // Delete user account

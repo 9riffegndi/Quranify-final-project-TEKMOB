@@ -332,16 +332,7 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       case 3:
         // Profile screen
-        ScaffoldMessenger.of(
-          context,
-        ).clearSnackBars(); // Clear any existing snackbars
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Profile screen needs to be created'),
-            duration: Duration(seconds: 1),
-          ),
-        );
-        // When implemented: Navigator.pushNamed(context, AppRoutes.profile);
+        Navigator.pushNamed(context, AppRoutes.profile);
         break;
     }
   }
@@ -412,16 +403,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                     // Left side: User profile with Hijri date & location to the right
                                     Row(
                                       children: [
-                                        // User profile initial
-                                        CircleAvatar(
-                                          radius: 24,
-                                          backgroundColor: Colors.white,
-                                          child: Text(
-                                            _getProfileInitial(),
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                              color: Color(0xFF219EBC),
-                                              fontWeight: FontWeight.bold,
+                                        // User profile initial with tap to navigate to profile
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              AppRoutes.profile,
+                                            );
+                                          },
+                                          child: CircleAvatar(
+                                            radius: 24,
+                                            backgroundColor: Colors.white,
+                                            child: Text(
+                                              _getProfileInitial(),
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                color: Color(0xFF219EBC),
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -599,7 +598,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 fit: StackFit.passthrough,
                 children: [
                   // Background color for the entire body
-                    Container(color: Color(0xFF39A9C6)),
+                  Container(color: Color(0xFF39A9C6)),
                   // Main white container with rounded top corners
                   Padding(
                     padding: const EdgeInsets.only(

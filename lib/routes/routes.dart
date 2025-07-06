@@ -7,9 +7,10 @@ import '../presentation/screens/alquran/surahs.dart';
 import '../presentation/screens/alquran/detail_surahs.dart';
 import '../presentation/screens/hadith/hadist.dart';
 import '../presentation/screens/hadith/detail_hadith.dart';
-import '../presentation/screens/youtube_videos_screen.dart';
-import '../presentation/screens/youtube_player_screen.dart'
+import '../presentation/screens/youtube/youtube_videos_screen.dart';
+import '../presentation/screens/youtube/youtube_player_screen.dart'
     as player; // Import with alias
+import '../presentation/screens/profile/myprofile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppRoutes {
@@ -75,37 +76,7 @@ class AppRoutes {
           ),
         );
       case profile:
-        // Temporary placeholder until screens are created
-        return MaterialPageRoute(
-          builder: (context) => Scaffold(
-            appBar: AppBar(
-              title: Text(
-                '${settings.name?.substring(1).toUpperCase()} Screen',
-              ),
-              backgroundColor: const Color(0xFF219EBC),
-            ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${settings.name?.substring(1).toUpperCase()} screen will be implemented soon',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () =>
-                        Navigator.pushReplacementNamed(context, home),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF219EBC),
-                    ),
-                    child: const Text('Return to Home'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
+        return MaterialPageRoute(builder: (_) => const ProfileScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

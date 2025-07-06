@@ -49,6 +49,25 @@ class AuthService {
     await _userRepository.logout();
   }
 
+  // Update user profile
+  Future<UserModel> updateUser({
+    String? fullName,
+    String? username,
+    String? email,
+    String? password,
+    String? city,
+    DateTime? birthDate,
+  }) async {
+    return await _userRepository.updateUser(
+      fullName: fullName,
+      username: username,
+      email: email,
+      password: password,
+      city: city,
+      birthDate: birthDate,
+    );
+  }
+
   // Social login (Google, Facebook, etc.)
   Future<UserModel> loginWithSocial({
     required String provider,
