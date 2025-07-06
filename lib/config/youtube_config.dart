@@ -2,18 +2,18 @@
 /// File ini berisi API key dan konstanta untuk mengakses YouTube Data API v3
 class YouTubeConfig {
   // API Key YouTube - Ganti dengan API key Anda yang baru
-  static const String apiKey = 'AIzaSyAzG2cyBnWRclnECrbu8pJWCwAlsoOkmPw';
-  
+  static const String apiKey = 'AIzaSyABDW9tx3uqaxudpemP_atu9Rd22aqvY6I';
+
   // Base URL untuk YouTube Data API v3
   static const String baseUrl = 'https://www.googleapis.com/youtube/v3';
-  
+
   // Channel ID untuk konten Islami terkenal (opsional)
   static const Map<String, String> islamicChannels = {
     'yufid': 'UCkCJ03-d5kicGpO7td6Ja_g',
     'rodja': 'UCYfqjjGbZwLWQCqMV9kF9_Q',
     'nuon': 'UCMuUlMZSyoNVOlBkTsLfxfg',
   };
-  
+
   // Keyword pencarian untuk konten Islami
   static const List<String> islamicKeywords = [
     'kajian islam',

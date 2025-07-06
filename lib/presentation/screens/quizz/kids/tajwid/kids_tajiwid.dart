@@ -200,7 +200,7 @@ class _KidsTajwidScreenState extends State<KidsTajwidScreen>
         children: [
           // Kids mode image
           Image.asset(
-            '../../../../../../assets/images/quiz/hijaiyah.png',
+            '../../../../../assets/images/quiz/hijaiyah.png',
             height: 150,
             fit: BoxFit.contain,
           ),

@@ -347,7 +347,7 @@ class _HijaiyahGameScreenState extends State<HijaiyahGameScreen>
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Image.asset(
-                                        '../../../../../../assets/images/quiz/kids_mode.png',
+                                        'assets/images/quiz/kids_mode.png',
                                         height: 100,
                                       ),
                                       const SizedBox(height: 12),

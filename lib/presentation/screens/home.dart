@@ -6,11 +6,8 @@ import '../../../data/models/user_model.dart';
 import '../../../data/services/auth_service.dart';
 import '../../../routes/routes.dart';
 import '../../../data/services/quran/bookmark_service.dart';
-import '../../../data/models/hadith/hadith_book_model.dart';
-import '../../../data/services/hadith/hadith_service.dart';
 import '../../../data/services/hadith/bookmark_service.dart';
 import '../../../data/services/youtube_service.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -115,8 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     try {
-      final YouTubeService youtubeService = YouTubeService();
-      final videos = await youtubeService.getIslamicStudyVideos();
+      final videos = await _youtubeService.getIslamicStudyVideos();
 
       setState(() {
         _youtubeVideos = videos;
@@ -361,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return [
                   SliverAppBar(
                     expandedHeight:
-                        300.0, // Increased height for the new layout
+                        320.0, // Increased height for better mobile display
                     floating: false,
                     pinned: true,
                     backgroundColor: const Color(0xFF219EBC),
@@ -385,7 +381,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           // Background image (below the overlay in z-order)
                           Image.asset(
-                            './assets/images/mosquee.png',
+                            'assets/images/mosquee.png',
                             fit: BoxFit.cover,
                             width: MediaQuery.of(context).size.width,
                             height: double.infinity,
@@ -625,8 +621,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       child: SingleChildScrollView(
-                        // Use padding only as needed for bottom nav
-                        padding: const EdgeInsets.only(bottom: 80),
+                        // Increased bottom padding to ensure content isn't covered by bottom nav bar
+                        padding: const EdgeInsets.only(bottom: 100),
                         child: Column(
                           mainAxisSize:
                               MainAxisSize.min, // Use min size to fit content
@@ -1360,31 +1356,51 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        currentIndex: _currentIndex,
-        selectedItemColor: const Color(0xFF219EBC),
-        unselectedItemColor: Colors.grey,
-        selectedLabelStyle: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
         ),
-        unselectedLabelStyle: const TextStyle(fontSize: 12),
-        onTap: _onNavItemTapped,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book),
-            label: 'Al Quran',
+        child: SafeArea(
+          child: BottomNavigationBar(
+            elevation: 8,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.white,
+            currentIndex: _currentIndex,
+            selectedItemColor: const Color(0xFF219EBC),
+            unselectedItemColor: Colors.grey,
+            selectedLabelStyle: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+            unselectedLabelStyle: const TextStyle(fontSize: 12),
+            onTap: _onNavItemTapped,
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.menu_book),
+                label: 'Al Quran',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.history_edu),
+                label: 'Hadist',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.school),
+                label: 'Fun Learn',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profile',
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history_edu),
-            label: 'Hadist',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Fun Learn'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
+        ),
       ),
     );
   }
