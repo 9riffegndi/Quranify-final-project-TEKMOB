@@ -75,12 +75,6 @@ class _YouTubeVideosScreenState extends State<YouTubeVideosScreen> {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              // Implement search functionality
-            },
-          ),
           IconButton(icon: const Icon(Icons.refresh), onPressed: _loadVideos),
         ],
       ),
