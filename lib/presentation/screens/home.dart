@@ -11,6 +11,7 @@ import '../../../data/services/hadith/hadith_service.dart';
 import '../../../data/services/hadith/bookmark_service.dart';
 import '../../../data/services/youtube_service.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import '../../../ai-fitur/ai_fitur.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -638,6 +639,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // AI Feature Button - Tambahkan di bagian atas
+                                  const AIFeatureButton(),
+                                  
                                   // Bookmarks Horizontal List
                                   Container(
                                     width: double.infinity,

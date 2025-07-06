@@ -25,6 +25,10 @@ dependencies:
   googleapis: ^13.0.0  # For YouTube API access
   googleapis_auth: ^1.4.1  # For Google API authentication
   flutter_svg: ^2.0.10  # For rendering SVG images
+  # AI Dependencies
+  google_generative_ai: ^0.4.3  # For Google Gemini AI
+  speech_to_text: ^6.6.0  # For voice input
+  flutter_markdown: ^0.6.18  # For displaying AI responses
 
 dev_dependencies:
   flutter_test:
