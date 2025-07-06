@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../data/services/tajwid_data_provider.dart';
+import '../../../../../data/services/provider/tajwid_data_provider.dart';
 import '../../../../../services/tajwid_progress_service.dart';
 import 'tajwid_game_screen.dart';
 

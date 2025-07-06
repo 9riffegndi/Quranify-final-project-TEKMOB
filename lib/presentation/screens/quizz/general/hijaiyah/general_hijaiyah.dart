@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../data/services/advanced_hijaiyah_data_provider.dart';
+import '../../../../../data/services/provider/advanced_hijaiyah_data_provider.dart';
 import '../../../../../services/general_hijaiyah_progress_service.dart';
 import 'general_hijaiyah_game_screen.dart';
 

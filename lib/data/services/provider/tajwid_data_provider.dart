@@ -1,4 +1,4 @@
-import '../models/tajwid/tajwid_rule.dart';
+import '../../models/tajwid/tajwid_rule.dart';
 
 /// Data provider for the Tajwid game
 /// Contains tajwid rules data for each level

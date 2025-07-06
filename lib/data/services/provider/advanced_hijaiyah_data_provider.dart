@@ -1,4 +1,4 @@
-import '../models/hijaiyah/advanced_hijaiyah_letter.dart';
+import '../../models/hijaiyah/advanced_hijaiyah_letter.dart';
 
 /// Data provider for advanced Hijaiyah game
 class AdvancedHijaiyahDataProvider {
