@@ -390,21 +390,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           // Background image (below the overlay in z-order)
                           Image.asset(
-                            'assets/images/masque.png',
+                            './assets/images/mosquee.png',
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              // Fallback image if masque.png is not found
-                              return Image.asset(
-                                'assets/images/logo.png',
-                                fit: BoxFit
-                                    .contain, // Changed to contain for better clarity
-                                color: Colors.white.withOpacity(
-                                  0.8,
-                                ), // Apply white tint
-                                colorBlendMode:
-                                    BlendMode.srcIn, // Blend mode for the tint
-                              );
-                            },
+                            width: MediaQuery.of(context).size.width,
+                            height: double.infinity,
+                            color: Colors.white.withOpacity(0.1),
+                            colorBlendMode: BlendMode.srcIn,
                           ),
                           // Header content
                           Padding(
@@ -605,9 +596,10 @@ class _HomeScreenState extends State<HomeScreen> {
               },
 
               body: Stack(
+                fit: StackFit.passthrough,
                 children: [
                   // Background color for the entire body
-                  Container(color: Color(0xFF0097A7)),
+                    Container(color: Color(0xFF39A9C6)),
                   // Main white container with rounded top corners
                   Padding(
                     padding: const EdgeInsets.only(
@@ -615,7 +607,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ), // Space for search bar
                     child: Container(
                       width: double.infinity,
-                      height: double.infinity,
+                      // Use constraints to fit content rather than infinite height
+                      constraints: BoxConstraints(
+                        minHeight:
+                            MediaQuery.of(context).size.height -
+                            190, // Account for app bar and bottom nav
+                      ),
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.vertical(
@@ -625,9 +622,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       child: SingleChildScrollView(
-                        // Add padding at the bottom to prevent overflow
-                        padding: const EdgeInsets.only(bottom: 110),
+                        // Use padding only as needed for bottom nav
+                        padding: const EdgeInsets.only(bottom: 80),
                         child: Column(
+                          mainAxisSize:
+                              MainAxisSize.min, // Use min size to fit content
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // Main content area
@@ -707,8 +706,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ? const Center(
                                                   child:
                                                       CircularProgressIndicator(
-                                                        color: Color(
-                                                          0xFF219EBC,
+                                                        color: Color.fromARGB(
+                                                          255,
+                                                          0,
+                                                          0,
+                                                          0,
                                                         ),
                                                       ),
                                                 )
@@ -1186,7 +1188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 gradient: const LinearGradient(
                                                   colors: [
                                                     Color(0xFF219EBC),
-                                                    Color(0xFF0097A7),
+                                                    Color(0xFF39A9C6),
                                                   ],
                                                   begin: Alignment.topLeft,
                                                   end: Alignment.bottomRight,
@@ -1258,7 +1260,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         // YouTube videos horizontal list
                                         SizedBox(
                                           height:
-                                              210, // Increased height to prevent overflow
+                                              208, // Adjusted height for better fit
                                           child: _loadingYoutubeVideos
                                               ? const Center(
                                                   child:
@@ -1299,8 +1301,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
 
-                                  // Space at the bottom for better UI spacing
-                                  const SizedBox(height: 110),
+                                  // Small space at the bottom for better visual appearance
+                                  const SizedBox(height: 20),
                                 ],
                               ),
                             ),

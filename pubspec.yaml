@@ -24,6 +24,7 @@ dependencies:
   url_launcher: ^6.2.5  # For launching YouTube app/website
   googleapis: ^13.0.0  # For YouTube API access
   googleapis_auth: ^1.4.1  # For Google API authentication
+  flutter_svg: ^2.0.10  # For rendering SVG images
 
 dev_dependencies:
   flutter_test:
