@@ -9,6 +9,8 @@ import '../../../data/services/quran/bookmark_service.dart';
 import '../../../data/models/hadith/hadith_book_model.dart';
 import '../../../data/services/hadith/hadith_service.dart';
 import '../../../data/services/hadith/bookmark_service.dart';
+import '../../../data/services/youtube_service.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
       BookmarkService(); // Quran bookmark service
   final HadithBookmarkService _hadithBookmarkService =
       HadithBookmarkService(); // Hadith bookmark service
+  final YouTubeService _youtubeService = YouTubeService(); // YouTube service
   UserModel? _user;
   bool _isGuest = false;
   bool _isLoading = true;
@@ -31,9 +34,11 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0; // For bottom navigation bar
   List<Map<String, dynamic>> _bookmarks = []; // Store Quran bookmarks
   List<Map<String, dynamic>> _hadithBookmarks = []; // Store Hadith bookmarks
+  List<Map<String, dynamic>> _youtubeVideos = []; // Store YouTube videos
   bool _loadingBookmarks = true; // Track loading state for Quran bookmarks
   bool _loadingHadithBookmarks =
       true; // Track loading state for Hadith bookmarks
+  bool _loadingYoutubeVideos = true; // Track loading state for YouTube videos
 
   // Prayer times - in real app would be fetched from API
   final Map<String, String> _prayerTimes = {
@@ -50,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadUserData();
     _loadBookmarks(); // Load Quran bookmarks
     _loadHadithBookmarks(); // Load Hadith bookmarks
+    _loadYoutubeVideos(); // Load YouTube videos
     _updateTime();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _updateTime());
   }
@@ -99,6 +105,28 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         );
       }
+    }
+  }
+
+  // Load YouTube videos from service
+  Future<void> _loadYoutubeVideos() async {
+    setState(() {
+      _loadingYoutubeVideos = true;
+    });
+
+    try {
+      final YouTubeService youtubeService = YouTubeService();
+      final videos = await youtubeService.getIslamicStudyVideos();
+
+      setState(() {
+        _youtubeVideos = videos;
+        _loadingYoutubeVideos = false;
+      });
+    } catch (e) {
+      print('Error loading YouTube videos: $e');
+      setState(() {
+        _loadingYoutubeVideos = false;
+      });
     }
   }
 
@@ -1135,8 +1163,143 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
 
+                                  // YouTube Kajian Islam Section
+                                  Container(
+                                    width: double.infinity,
+                                    margin: const EdgeInsets.only(bottom: 16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // Header with See All button
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 12,
+                                                    vertical: 6,
+                                                  ),
+                                              decoration: BoxDecoration(
+                                                gradient: const LinearGradient(
+                                                  colors: [
+                                                    Color(0xFF219EBC),
+                                                    Color(0xFF0097A7),
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: const Color(
+                                                      0xFF219EBC,
+                                                    ).withOpacity(0.3),
+                                                    blurRadius: 8,
+                                                    offset: const Offset(0, 3),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: const Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Icon(
+                                                    Icons.video_library,
+                                                    color: Colors.white,
+                                                    size: 18,
+                                                  ),
+                                                  SizedBox(width: 6),
+                                                  Text(
+                                                    'Kajian Islam',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                // Navigate to YouTube videos list page
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  AppRoutes.youtubeVideos,
+                                                );
+                                              },
+                                              child: const Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    'Lihat Semua',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF219EBC),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 4),
+                                                  Icon(
+                                                    Icons.arrow_forward,
+                                                    size: 16,
+                                                    color: Color(0xFF219EBC),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 12),
+                                        // YouTube videos horizontal list
+                                        SizedBox(
+                                          height:
+                                              210, // Increased height to prevent overflow
+                                          child: _loadingYoutubeVideos
+                                              ? const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                        color: Color(
+                                                          0xFF219EBC,
+                                                        ),
+                                                      ),
+                                                )
+                                              : ListView.builder(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount:
+                                                      _youtubeVideos.length,
+                                                  itemBuilder: (context, index) {
+                                                    final video =
+                                                        _youtubeVideos[index];
+                                                    return YouTubeVideoItem(
+                                                      thumbnailUrl:
+                                                          video['thumbnailUrl'] ??
+                                                          '',
+                                                      title:
+                                                          video['title'] ??
+                                                          'Video',
+                                                      channelName:
+                                                          video['channelName'] ??
+                                                          'Channel',
+                                                      duration:
+                                                          video['duration'] ??
+                                                          '0:00',
+                                                      videoId:
+                                                          video['id'] ?? '',
+                                                    );
+                                                  },
+                                                ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
                                   // Space at the bottom for better UI spacing
-                                  // Add additional bottom padding
                                   const SizedBox(height: 110),
                                 ],
                               ),
@@ -1368,6 +1531,174 @@ class HadithBookmarkItem extends StatelessWidget {
             Text(
               'No. $hadithNumber',
               style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// YouTube Video Item for displaying videos in the horizontal list
+class YouTubeVideoItem extends StatelessWidget {
+  final String thumbnailUrl;
+  final String title;
+  final String channelName;
+  final String duration;
+  final String videoId;
+
+  const YouTubeVideoItem({
+    Key? key,
+    required this.thumbnailUrl,
+    required this.title,
+    required this.channelName,
+    required this.duration,
+    required this.videoId,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // Navigate to YouTube player screen
+        Navigator.of(context).pushNamed(
+          AppRoutes.youtubePlayer,
+          arguments: {'videoId': videoId, 'title': title},
+        );
+      },
+      child: Container(
+        width: 280,
+        height: 200, // Fixed height to prevent overflow
+        margin: const EdgeInsets.only(right: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Video thumbnail with duration
+            Stack(
+              children: [
+                // Thumbnail image
+                ClipRRect(
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(12),
+                  ),
+                  child: Image.network(
+                    thumbnailUrl,
+                    height: 130, // Reduced height to prevent overflow
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    // Placeholder and error handling
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        height: 130,
+                        color: Colors.grey[300],
+                        child: const Center(
+                          child: Icon(
+                            Icons.image_not_supported,
+                            size: 40,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      );
+                    },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(
+                        height: 130,
+                        color: Colors.grey[200],
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: Color(0xFF219EBC),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+                // Play button overlay
+                Positioned.fill(
+                  child: Center(
+                    child: Container(
+                      width: 45,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.6),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.play_arrow,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Duration badge
+                Positioned(
+                  bottom: 8,
+                  right: 8,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.7),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      duration,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            // Video title and channel info
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
+              ), // Reduced vertical padding
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4), // Reduced spacing
+                  Text(
+                    channelName,
+                    style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
