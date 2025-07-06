@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Config files containing sensitive API keys
+/lib/config/youtube_config.dart
