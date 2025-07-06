@@ -49,35 +49,6 @@ void main() async {
       ),
     );
   }
-
-  // Initialize AudioPlayer globally for web
-  if (kIsWeb) {
-    // For web platform, we need special handling
-    try {
-      await AudioPlayer.global.setGlobalAudioContext(
-        AudioContext(
-          iOS: AudioContextIOS(
-            category: AVAudioSessionCategory.playback,
-            options: [AVAudioSessionOptions.mixWithOthers],
-          ),
-          android: AudioContextAndroid(
-            isSpeakerphoneOn: true,
-            stayAwake: true,
-            contentType: AndroidContentType.music,
-            usageType: AndroidUsageType.media,
-          ),
-        ),
-      );
-      // No need to pre-initialize with an asset
-      // Instead, we'll handle audio initialization lazily when needed
-    } catch (e) {
-      // Silently handle initialization errors on web
-      print('Audio initialization error (expected on some browsers): $e');
-    }
-  }
-
-  // Now we always start with the splash screen
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
