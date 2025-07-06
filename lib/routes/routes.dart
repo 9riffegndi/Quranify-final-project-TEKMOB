@@ -15,6 +15,7 @@ import '../presentation/screens/quizz/base_fun_learn.dart';
 import '../presentation/screens/quizz/kids/base_kids_fl.dart';
 import '../presentation/screens/quizz/general/base_general_fl.dart';
 import '../presentation/screens/quizz/kids/hijaiyah/kids_hijaiyah.dart';
+import '../presentation/screens/quizz/kids/hijaiyah/hijaiyah_game_screen.dart';
 import '../presentation/screens/quizz/kids/tajwid/kids_tajiwid.dart';
 import '../presentation/screens/quizz/kids/sambung_ayat/kids_sambung_ayat.dart';
 import '../presentation/screens/quizz/general/hijaiyah/general_hijaiyah.dart';
@@ -44,6 +45,7 @@ class AppRoutes {
 
   // Kids Quiz routes
   static const String kidsHijaiyah = '/quizz/kids/hijaiyah/kids_hijaiyah';
+  static const String kidsHijaiyahGame = '/quizz/kids/hijaiyah/game';
   static const String kidsTajwid = '/quizz/kids/tajwid/kids_tajiwid';
   static const String kidsSambungAyat =
       '/quizz/kids/sambung_ayat/kids_sambung_ayat';
@@ -114,18 +116,39 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const BaseGeneralFLScreen());
       case kidsHijaiyah:
         return MaterialPageRoute(builder: (_) => const KidsHijaiyahScreen());
+      case kidsHijaiyahGame:
+        try {
+          final args = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder: (_) => HijaiyahGameScreen(
+              level: args['level'],
+              levelLetters: args['levelLetters'],
+            ),
+          );
+        } catch (e) {
+          print('Error navigating to HijaiyahGameScreen: $e');
+          return MaterialPageRoute(
+            builder: (context) => Scaffold(
+              appBar: AppBar(title: const Text('Error')),
+              body: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('Maaf, terjadi kesalahan.'),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Kembali'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
       case kidsTajwid:
         return MaterialPageRoute(builder: (_) => const KidsTajwidScreen());
       case kidsSambungAyat:
         return MaterialPageRoute(builder: (_) => const KidsSambungAyatScreen());
-      case '/quizz/general/hijaiyah/general_hijaiyah':
-        return MaterialPageRoute(builder: (_) => const GeneralHijaiyahScreen());
-      case '/quizz/general/tajwid/general_tajwid':
-        return MaterialPageRoute(builder: (_) => const GeneralTajwidScreen());
-      case '/quizz/general/sambung_ayat/general_sambung_ayat':
-        return MaterialPageRoute(
-          builder: (_) => const GeneralSambungAyatScreen(),
-        );
       case generalHijaiyah:
         return MaterialPageRoute(builder: (_) => const GeneralHijaiyahScreen());
       case generalTajwid:
