@@ -331,6 +331,10 @@ class _HomeScreenState extends State<HomeScreen> {
         Navigator.pushNamed(context, AppRoutes.hadist);
         break;
       case 3:
+        // Fun Learn screen
+        Navigator.pushNamed(context, AppRoutes.funLearn);
+        break;
+      case 4:
         // Profile screen
         Navigator.pushNamed(context, AppRoutes.profile);
         break;
@@ -1378,6 +1382,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.history_edu),
             label: 'Hadist',
           ),
+          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Fun Learn'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),

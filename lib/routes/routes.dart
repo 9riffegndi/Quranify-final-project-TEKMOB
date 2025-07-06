@@ -11,6 +11,15 @@ import '../presentation/screens/youtube/youtube_videos_screen.dart';
 import '../presentation/screens/youtube/youtube_player_screen.dart'
     as player; // Import with alias
 import '../presentation/screens/profile/myprofile.dart';
+import '../presentation/screens/quizz/base_fun_learn.dart';
+import '../presentation/screens/quizz/kids/base_kids_fl.dart';
+import '../presentation/screens/quizz/general/base_general_fl.dart';
+import '../presentation/screens/quizz/kids/hijaiyah/kids_hijaiyah.dart';
+import '../presentation/screens/quizz/kids/tajwid/kids_tajiwid.dart';
+import '../presentation/screens/quizz/kids/sambung_ayat/kids_sambung_ayat.dart';
+import '../presentation/screens/quizz/general/hijaiyah/general_hijaiyah.dart';
+import '../presentation/screens/quizz/general/tajwid/general_tajwid.dart';
+import '../presentation/screens/quizz/general/sambung_ayat/general_sambung_ayat.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppRoutes {
@@ -27,6 +36,24 @@ class AppRoutes {
   static const String profile = '/profile';
   static const String youtubeVideos = '/youtube-videos';
   static const String youtubePlayer = '/youtube-player'; // YouTube player route
+
+  // Quiz routes
+  static const String funLearn = '/fun-learn';
+  static const String kidsFunLearn = '/quizz/kids/base_kids_fl';
+  static const String generalFunLearn = '/quizz/general/base_general_fl';
+
+  // Kids Quiz routes
+  static const String kidsHijaiyah = '/quizz/kids/hijaiyah/kids_hijaiyah';
+  static const String kidsTajwid = '/quizz/kids/tajwid/kids_tajiwid';
+  static const String kidsSambungAyat =
+      '/quizz/kids/sambung_ayat/kids_sambung_ayat';
+
+  // General Quiz routes
+  static const String generalHijaiyah =
+      '/quizz/general/hijaiyah/general_hijaiyah';
+  static const String generalTajwid = '/quizz/general/tajwid/general_tajwid';
+  static const String generalSambungAyat =
+      '/quizz/general/sambung_ayat/general_sambung_ayat';
 
   // Route generator
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -77,6 +104,37 @@ class AppRoutes {
         );
       case profile:
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
+
+      // Quiz routes
+      case funLearn:
+        return MaterialPageRoute(builder: (_) => const BaseFunLearnScreen());
+      case kidsFunLearn:
+        return MaterialPageRoute(builder: (_) => const BaseKidsFLScreen());
+      case generalFunLearn:
+        return MaterialPageRoute(builder: (_) => const BaseGeneralFLScreen());
+      case kidsHijaiyah:
+        return MaterialPageRoute(builder: (_) => const KidsHijaiyahScreen());
+      case kidsTajwid:
+        return MaterialPageRoute(builder: (_) => const KidsTajwidScreen());
+      case kidsSambungAyat:
+        return MaterialPageRoute(builder: (_) => const KidsSambungAyatScreen());
+      case '/quizz/general/hijaiyah/general_hijaiyah':
+        return MaterialPageRoute(builder: (_) => const GeneralHijaiyahScreen());
+      case '/quizz/general/tajwid/general_tajwid':
+        return MaterialPageRoute(builder: (_) => const GeneralTajwidScreen());
+      case '/quizz/general/sambung_ayat/general_sambung_ayat':
+        return MaterialPageRoute(
+          builder: (_) => const GeneralSambungAyatScreen(),
+        );
+      case generalHijaiyah:
+        return MaterialPageRoute(builder: (_) => const GeneralHijaiyahScreen());
+      case generalTajwid:
+        return MaterialPageRoute(builder: (_) => const GeneralTajwidScreen());
+      case generalSambungAyat:
+        return MaterialPageRoute(
+          builder: (_) => const GeneralSambungAyatScreen(),
+        );
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

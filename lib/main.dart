@@ -45,7 +45,7 @@ void main() async {
     // Fall back to a simple app if initialization fails
     runApp(
       MaterialApp(
-        home: Scaffold(body: Center(child: Text('Error initializing app: $e'))),
+        home: Scaffold(body: Center(child: Text('Error initializing app: $e')))
       ),
     );
   }
