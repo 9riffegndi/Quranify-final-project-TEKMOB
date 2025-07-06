@@ -23,6 +23,14 @@ class _HomeScreenState extends State<HomeScreen> {
   final HadithBookmarkService _hadithBookmarkService =
       HadithBookmarkService(); // Hadith bookmark service
   final YouTubeService _youtubeService = YouTubeService(); // YouTube service
+  final TextEditingController _searchController =
+      TextEditingController(); // Search text controller
+  bool _isSearching = false; // Track if search is active
+  List<Map<String, dynamic>> _surahSearchResults =
+      []; // Store Surah search results
+  List<Map<String, dynamic>> _hadithSearchResults =
+      []; // Store Hadith search results
+  bool _searchLoading = false; // Track loading state for search
   UserModel? _user;
   bool _isGuest = false;
   bool _isLoading = true;
@@ -129,7 +137,130 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     _timer.cancel();
+    _searchController.dispose();
     super.dispose();
+  }
+
+  // Search for Surah and Hadith
+  Future<void> _performSearch(String query) async {
+    if (query.isEmpty) {
+      setState(() {
+        _isSearching = false;
+        _surahSearchResults.clear();
+        _hadithSearchResults.clear();
+      });
+      return;
+    }
+
+    setState(() {
+      _searchLoading = true;
+      _isSearching = true;
+    });
+
+    try {
+      // Mock search results for Surah - in a real app this would come from an API or database
+      final List<Map<String, dynamic>> surahResults = [];
+
+      // Example Surahs for search results
+      final List<Map<String, dynamic>> allSurahs = [
+        {'number': 1, 'name': 'Al-Fatihah', 'englishName': 'The Opening'},
+        {'number': 2, 'name': 'Al-Baqarah', 'englishName': 'The Cow'},
+        {'number': 3, 'name': 'Ali \'Imran', 'englishName': 'Family of Imran'},
+        {'number': 4, 'name': 'An-Nisa', 'englishName': 'The Women'},
+        {'number': 5, 'name': 'Al-Ma\'idah', 'englishName': 'The Table Spread'},
+        {'number': 36, 'name': 'Ya Sin', 'englishName': 'Ya Sin'},
+        {'number': 55, 'name': 'Ar-Rahman', 'englishName': 'The Beneficent'},
+        {'number': 56, 'name': 'Al-Waqi\'ah', 'englishName': 'The Inevitable'},
+        {'number': 67, 'name': 'Al-Mulk', 'englishName': 'The Sovereignty'},
+        {'number': 78, 'name': 'An-Naba', 'englishName': 'The Announcement'},
+        {'number': 112, 'name': 'Al-Ikhlas', 'englishName': 'The Sincerity'},
+        {'number': 113, 'name': 'Al-Falaq', 'englishName': 'The Daybreak'},
+        {'number': 114, 'name': 'An-Nas', 'englishName': 'Mankind'},
+      ];
+
+      // Filter surahs based on search query
+      for (var surah in allSurahs) {
+        if (surah['name'].toString().toLowerCase().contains(
+              query.toLowerCase(),
+            ) ||
+            surah['englishName'].toString().toLowerCase().contains(
+              query.toLowerCase(),
+            ) ||
+            surah['number'].toString() == query) {
+          surahResults.add(surah);
+        }
+      }
+
+      // Mock search results for Hadith
+      final List<Map<String, dynamic>> hadithResults = [];
+
+      // Example Hadith collections for search
+      final List<Map<String, dynamic>> allHadithBooks = [
+        {'id': 'bukhari', 'name': 'Sahih Bukhari', 'available': true},
+        {'id': 'muslim', 'name': 'Sahih Muslim', 'available': true},
+        {'id': 'abudawud', 'name': 'Abu Dawud', 'available': true},
+        {'id': 'tirmidhi', 'name': 'Jami at-Tirmidhi', 'available': true},
+        {'id': 'nasai', 'name': 'Sunan an-Nasai', 'available': true},
+        {'id': 'ibnmajah', 'name': 'Sunan Ibn Majah', 'available': true},
+        {'id': 'malik', 'name': 'Muwatta Malik', 'available': true},
+      ];
+
+      // Filter hadith books based on search query
+      for (var book in allHadithBooks) {
+        if (book['name'].toString().toLowerCase().contains(
+          query.toLowerCase(),
+        )) {
+          hadithResults.add(book);
+        }
+      }
+
+      setState(() {
+        _surahSearchResults = surahResults;
+        _hadithSearchResults = hadithResults;
+        _searchLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _searchLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Search error: ${e.toString()}')),
+        );
+      }
+    }
+  }
+
+  // Navigate to the selected Surah
+  void _navigateToSurah(int surahNumber) {
+    Navigator.pushNamed(
+      context,
+      AppRoutes.detailSurah,
+      arguments: {'surahNumber': surahNumber},
+    );
+    // Clear search after navigation
+    _clearSearch();
+  }
+
+  // Navigate to the selected Hadith book
+  void _navigateToHadithBook(String bookId) {
+    Navigator.pushNamed(
+      context,
+      AppRoutes.hadist,
+      arguments: {'bookId': bookId},
+    );
+    // Clear search after navigation
+    _clearSearch();
+  }
+
+  // Clear search results and reset search state
+  void _clearSearch() {
+    _searchController.clear();
+    setState(() {
+      _isSearching = false;
+      _surahSearchResults.clear();
+      _hadithSearchResults.clear();
+    });
   }
 
   void _updateTime() {
@@ -1311,47 +1442,278 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                  // Floating search bar
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(
-                          25.0,
-                        ), // Fully rounded
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
+                  // Floating search bar and search results
+                  Stack(
+                    children: [
+                      // Search bar
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                          height: 45,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(
+                              25.0,
+                            ), // Fully rounded
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 6,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Search Surah, Ayat, or Topic...',
-                          prefixIcon: const Icon(
-                            Icons.search,
-                            color: Color(0xFF219EBC),
-                          ),
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0,
-                          ),
-                          hintStyle: const TextStyle(
-                            color: Color(0xFF219EBC),
-                            fontSize: 14,
+                          child: TextField(
+                            controller: _searchController,
+                            onChanged: (value) {
+                              _performSearch(value);
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Search Surah, Ayat, or Topic...',
+                              prefixIcon: const Icon(
+                                Icons.search,
+                                color: Color(0xFF219EBC),
+                              ),
+                              suffixIcon: _isSearching
+                                  ? IconButton(
+                                      icon: const Icon(
+                                        Icons.clear,
+                                        color: Color(0xFF219EBC),
+                                      ),
+                                      onPressed: _clearSearch,
+                                    )
+                                  : null,
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 12.0,
+                              ),
+                              hintStyle: const TextStyle(
+                                color: Color(0xFF219EBC),
+                                fontSize: 14,
+                              ),
+                            ),
+                            cursorColor: const Color(0xFF219EBC),
+                            style: const TextStyle(color: Color(0xFF219EBC)),
                           ),
                         ),
-                        cursorColor: const Color(0xFF219EBC),
-                        style: const TextStyle(color: Color(0xFF219EBC)),
                       ),
-                    ),
+
+                      // Search Results
+                      if (_isSearching)
+                        Positioned(
+                          top: 55, // Position below search bar
+                          left: 16,
+                          right: 16,
+                          child: Container(
+                            constraints: BoxConstraints(
+                              maxHeight:
+                                  MediaQuery.of(context).size.height * 0.5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: _searchLoading
+                                ? const Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(20.0),
+                                      child: CircularProgressIndicator(
+                                        color: Color(0xFF219EBC),
+                                      ),
+                                    ),
+                                  )
+                                : SingleChildScrollView(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        // Surah results
+                                        if (_surahSearchResults.isNotEmpty) ...[
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 8.0,
+                                            ),
+                                            child: Text(
+                                              'Surahs',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                                color: Color(0xFF219EBC),
+                                              ),
+                                            ),
+                                          ),
+                                          ...List.generate(
+                                            _surahSearchResults.length > 5
+                                                ? 5
+                                                : _surahSearchResults
+                                                      .length, // Limit to 5 results
+                                            (index) {
+                                              final surah =
+                                                  _surahSearchResults[index];
+                                              return ListTile(
+                                                leading: Container(
+                                                  width: 30,
+                                                  height: 30,
+                                                  decoration: BoxDecoration(
+                                                    color: const Color(
+                                                      0xFF219EBC,
+                                                    ).withOpacity(0.1),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      '${surah['number']}',
+                                                      style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Color(
+                                                          0xFF219EBC,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                title: Text(
+                                                  surah['name'],
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                subtitle: Text(
+                                                  surah['englishName'],
+                                                ),
+                                                contentPadding: EdgeInsets.zero,
+                                                onTap: () => _navigateToSurah(
+                                                  surah['number'],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          if (_surahSearchResults.length > 5)
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 8.0,
+                                              ),
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    AppRoutes.quran,
+                                                  );
+                                                  _clearSearch();
+                                                },
+                                                child: const Text(
+                                                  'View All Surahs',
+                                                  style: TextStyle(
+                                                    color: Color(0xFF219EBC),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          const Divider(),
+                                        ],
+
+                                        // Hadith results
+                                        if (_hadithSearchResults
+                                            .isNotEmpty) ...[
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 8.0,
+                                            ),
+                                            child: Text(
+                                              'Hadith Collections',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                                color: Color(0xFF219EBC),
+                                              ),
+                                            ),
+                                          ),
+                                          ...List.generate(
+                                            _hadithSearchResults.length > 5
+                                                ? 5
+                                                : _hadithSearchResults
+                                                      .length, // Limit to 5 results
+                                            (index) {
+                                              final hadithBook =
+                                                  _hadithSearchResults[index];
+                                              return ListTile(
+                                                leading: const Icon(
+                                                  Icons.history_edu,
+                                                  color: Color(0xFF219EBC),
+                                                ),
+                                                title: Text(
+                                                  hadithBook['name'],
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                contentPadding: EdgeInsets.zero,
+                                                onTap: () =>
+                                                    _navigateToHadithBook(
+                                                      hadithBook['id'],
+                                                    ),
+                                              );
+                                            },
+                                          ),
+                                          if (_hadithSearchResults.length > 5)
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 8.0,
+                                              ),
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    AppRoutes.hadist,
+                                                  );
+                                                  _clearSearch();
+                                                },
+                                                child: const Text(
+                                                  'View All Hadith Collections',
+                                                  style: TextStyle(
+                                                    color: Color(0xFF219EBC),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                        ],
+
+                                        // No results message
+                                        if (_surahSearchResults.isEmpty &&
+                                            _hadithSearchResults.isEmpty)
+                                          const Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Center(
+                                              child: Text(
+                                                'No results found',
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                          ),
+                        ),
+                    ],
                   ),
                 ],
               ),
