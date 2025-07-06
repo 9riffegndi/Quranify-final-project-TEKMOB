@@ -1,81 +1,94 @@
 import 'package:flutter/material.dart';
-import 'app_routes.dart';
-import 'features/akuncreate/login.dart';
-import 'features/home/home.dart';
-import 'features/quran/alquran_screen.dart';
-import 'features/hadist/hadith_screen.dart'; // ✅ tambahkan ini
+import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:audioplayers/audioplayers.dart';
+import 'routes/routes.dart';
 
-void main() {
-  runApp(const Quranify());
+void main() async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    // Set preferred orientations to portrait only
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    // Initialize AudioPlayer globally for web
+    if (kIsWeb) {
+      // For web platform, we need special handling
+      try {
+        await AudioPlayer.global.setGlobalAudioContext(
+          AudioContext(
+            iOS: AudioContextIOS(
+              category: AVAudioSessionCategory.playback,
+              options: [AVAudioSessionOptions.mixWithOthers],
+            ),
+            android: AudioContextAndroid(
+              isSpeakerphoneOn: true,
+              stayAwake: true,
+              contentType: AndroidContentType.music,
+              usageType: AndroidUsageType.media,
+            ),
+          ),
+        );
+      } catch (e) {
+        // Silently handle initialization errors on web
+        print('Audio initialization error (expected on some browsers): $e');
+      }
+    }
+
+    // Now we always start with the splash screen
+    runApp(const MyApp());
+  } catch (e) {
+    print('Fatal error during app initialization: $e');
+    // Fall back to a simple app if initialization fails
+    runApp(
+      MaterialApp(
+        home: Scaffold(body: Center(child: Text('Error initializing app: $e'))),
+      ),
+    );
+  }
 }
 
-class Quranify extends StatelessWidget {
-  const Quranify({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Quranify',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/', // SplashScreen pertama
-      routes: {
-        AppRoutes.login: (_) => const LoginScreen(),
-        AppRoutes.home: (_) => const HomeScreen(),
-        AppRoutes.quran: (_) => const AlquranScreen(),
-        AppRoutes.hadith: (_) => const HadithScreen(), // ✅ tambahkan ini
-      },
-      onGenerateRoute: (settings) {
-        if (settings.name == '/') {
-          return MaterialPageRoute(builder: (_) => const SplashScreen());
-        }
-        return AppRoutes.generateRoute(settings);
-      },
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  double _opacity = 0.0;
-  double _scale = 0.8;
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(milliseconds: 200), () {
-      setState(() {
-        _opacity = 1.0;
-        _scale = 1.0;
-      });
-    });
-
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, AppRoutes.login);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: AnimatedOpacity(
-          opacity: _opacity,
-          duration: const Duration(milliseconds: 500),
-          child: Transform.scale(
-            scale: _scale,
-            child: Image.asset('assets/images/icon.png', width: screenWidth * 0.5),
+      theme: ThemeData(
+        primaryColor: const Color(0xFF219EBC),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF219EBC),
+          primary: const Color(0xFF219EBC),
+        ),
+        scaffoldBackgroundColor: Colors.white,
+        fontFamily: 'Poppins',
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(const Color(0xFF219EBC)),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all(const Color(0xFF219EBC)),
+            side: MaterialStateProperty.all(
+              const BorderSide(color: Color(0xFF219EBC)),
+            ),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all(const Color(0xFF219EBC)),
           ),
         ),
       ),
+      initialRoute: AppRoutes.splash,
+      onGenerateRoute: AppRoutes.generateRoute,
     );
   }
 }
