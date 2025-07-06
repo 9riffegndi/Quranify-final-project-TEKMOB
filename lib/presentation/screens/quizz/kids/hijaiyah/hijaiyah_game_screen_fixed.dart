@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../../../data/models/hijaiyah/hijaiyah_letter.dart';
-import '../../../../../services/level_progress_service.dart';
 
 class HijaiyahGameScreen extends StatefulWidget {
   final int level;
@@ -76,22 +75,6 @@ class _HijaiyahGameScreenState extends State<HijaiyahGameScreen>
         _controller.reset();
         _controller.forward();
       });
-    }
-  }
-
-  // Function to mark the level as completed
-  Future<void> _completeLevel() async {
-    try {
-      // Default to 3 stars for completing the learning mode
-      // In a real app, you might calculate stars based on performance
-      const int earnedStars = 3;
-
-      // Mark the level as completed and save progress
-      await LevelProgressService.completeLevel(widget.level, earnedStars);
-
-      print('Level ${widget.level + 1} completed with $earnedStars stars');
-    } catch (e) {
-      print('Error saving level progress: $e');
     }
   }
 
@@ -346,9 +329,6 @@ class _HijaiyahGameScreenState extends State<HijaiyahGameScreen>
                           ? _nextLetter
                           : () {
                               // If at the last letter, show completion dialog
-                              // Mark the level as completed
-                              _completeLevel();
-
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,

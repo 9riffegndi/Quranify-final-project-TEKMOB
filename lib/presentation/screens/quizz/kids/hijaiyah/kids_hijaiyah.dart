@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import '../../../../../routes/routes.dart';
-import '../../../../../data/models/hijaiyah_letter.dart';
+import '../../../../../data/models/hijaiyah/hijaiyah_letter.dart';
 import '../../../../../services/level_progress_service.dart';
 
 class KidsHijaiyahScreen extends StatefulWidget {
