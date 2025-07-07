@@ -248,7 +248,7 @@ class YouTubeService {
         'title': 'Kajian Tafsir Al-Quran Surat Al-Baqarah',
         'channelName': 'Ustadz Abdul Somad',
         'duration': '45:22',
-        'thumbnailUrl': 'assets/images/masque.png', // Using app assets
+        'thumbnailUrl': '../../../assets/images/thumbnail/ustadz 1.jpg', // Using app assets
         'views': '245K',
         'uploadedAt': '2 minggu yang lalu',
       },
@@ -257,7 +257,7 @@ class YouTubeService {
         'title': 'Memahami Hadist Shahih Bukhari',
         'channelName': 'Ustadz Adi Hidayat',
         'duration': '38:15',
-        'thumbnailUrl': 'assets/images/logo.png', // Using app assets
+        'thumbnailUrl': '../../../assets/images/thumbnail/ustadz 2.jpg', // Using app assets
         'views': '128K',
         'uploadedAt': '3 minggu yang lalu',
       },
@@ -266,7 +266,7 @@ class YouTubeService {
         'title': 'Tafsir Surah Yasin',
         'channelName': 'Ustadz Hanan Attaki',
         'duration': '52:10',
-        'thumbnailUrl': 'assets/images/ngaji.png', // Using app assets
+        'thumbnailUrl': '../../../assets/images/thumbnail/ustadz 3.jpg', // Using app assets
         'views': '320K',
         'uploadedAt': '1 bulan yang lalu',
       },
@@ -275,7 +275,7 @@ class YouTubeService {
         'title': 'Memahami Asmaul Husna',
         'channelName': 'Ustadz Felix Siauw',
         'duration': '41:25',
-        'thumbnailUrl': 'assets/images/profile.png', // Using app assets
+        'thumbnailUrl': '../../../assets/images/thumbnail/ustadz 4.jpg', // Using app assets
         'views': '180K',
         'uploadedAt': '3 minggu yang lalu',
       },
@@ -284,7 +284,7 @@ class YouTubeService {
         'title': 'Kisah Para Nabi dan Rasul',
         'channelName': 'Ustadz Khalid Basalamah',
         'duration': '58:30',
-        'thumbnailUrl': 'assets/images/masque.png', // Using app assets
+        'thumbnailUrl': '../../../assets/images/thumbnail/ustadz 5.jpg', // Using app assets
         'views': '275K',
         'uploadedAt': '1 bulan yang lalu',
       },

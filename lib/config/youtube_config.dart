@@ -6,7 +6,7 @@ class YouTubeConfig {
   static const String apiKey = 'AIzaSyDSpFYeDzBfOgHOR6o3pu_yY_nFFeYPMVU';
 
   // Base URL untuk YouTube Data API v3
-  //static const String baseUrl = '';
+  // static const String baseUrl = '';
   static const String baseUrl = 'https://www.googleapis.com/youtube/v3';
 
   // Channel ID untuk konten Islami terkenal (opsional)

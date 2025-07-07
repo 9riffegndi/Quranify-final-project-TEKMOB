@@ -1059,7 +1059,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ayatNumber:
                                                           bookmark['ayatNumber'],
                                                       // Include content if available
-                                                      ayatContent: bookmark['content'] ?? 
+                                                      ayatContent:
+                                                          bookmark['content'] ??
                                                           "إِنَّمَا الْمُؤْمِنُونَ إِخْوَةٌ فَأَصْلِحُوا بَيْنَ أَخَوَيْكُمْ وَاتَّقُوا اللَّهَ لَعَلَّكُمْ تُرْحَمُونَ",
                                                       onTap: () {
                                                         Navigator.pushNamed(
@@ -1902,14 +1903,13 @@ class BookmarkItem extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    const Color(0xFF219EBC),
-                    const Color(0xFF1A8CAB),
-                  ],
+                  colors: [const Color(0xFF219EBC), const Color(0xFF1A8CAB)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               child: Row(
@@ -1952,7 +1952,7 @@ class BookmarkItem extends StatelessWidget {
                         Text(
                           'Ayat $ayatNumber',
                           style: const TextStyle(
-                            fontSize: 12, 
+                            fontSize: 12,
                             color: Colors.white,
                             fontWeight: FontWeight.w300,
                           ),
@@ -1963,7 +1963,7 @@ class BookmarkItem extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             // Content preview section
             Expanded(
               child: Container(
@@ -2058,13 +2058,15 @@ class HadithBookmarkItem extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   colors: [
-                    Color(0xFF0097A7),  // Different color scheme for hadith
+                    Color(0xFF0097A7), // Different color scheme for hadith
                     Color(0xFF219EBC),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               child: Row(
@@ -2104,7 +2106,7 @@ class HadithBookmarkItem extends StatelessWidget {
                         Text(
                           'Hadith No. $hadithNumber',
                           style: const TextStyle(
-                            fontSize: 12, 
+                            fontSize: 12,
                             color: Colors.white,
                             fontWeight: FontWeight.w300,
                           ),
@@ -2115,7 +2117,7 @@ class HadithBookmarkItem extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             // Content preview section
             Expanded(
               child: Container(
