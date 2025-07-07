@@ -2,8 +2,8 @@
 /// File ini berisi API key dan konstanta untuk mengakses YouTube Data API v3
 class YouTubeConfig {
   // API Key YouTube - Ganti dengan API key Anda yang baru
-  //static const String apiKey = '';
-  static const String apiKey = 'AIzaSyDSpFYeDzBfOgHOR6o3pu_yY_nFFeYPMVU';
+  // static const String apiKey = '';
+  static const String apiKey = 'AIzaSyCmOHPLf1PJQOcd3UTA5FFmUSSLMR2CQaY';
 
   // Base URL untuk YouTube Data API v3
   // static const String baseUrl = '';

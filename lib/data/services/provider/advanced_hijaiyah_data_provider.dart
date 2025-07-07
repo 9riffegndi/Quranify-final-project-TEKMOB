@@ -14,7 +14,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ب',
         latin: 'Ba',
-        audio: 'ba.mp3',
+        audio: 'assets/audio/hijaiyah/ba.mp3',
         forms: ['ﺑ', 'ﺒ', 'ﺐ', 'ب'],
         pronounciation:
             'Produced by pressing both lips together and then separating them',
@@ -26,7 +26,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ت',
         latin: 'Ta',
-        audio: 'ta.mp3',
+        audio: 'assets/audio/hijaiyah/ta.mp3',
         forms: ['ﺗ', 'ﺘ', 'ﺖ', 'ت'],
         pronounciation:
             'Produced by pressing the tip of the tongue against the base of the front teeth',
@@ -38,7 +38,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ث',
         latin: 'Tsa',
-        audio: 'tsa.mp3',
+        audio: 'assets/audio/hijaiyah/tsa.mp3',
         forms: ['ﺛ', 'ﺜ', 'ﺚ', 'ث'],
         pronounciation:
             'Produced by placing the tip of the tongue between the teeth',
@@ -54,7 +54,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ح',
         latin: 'Ha',
-        audio: 'ha.mp3',
+        audio: 'assets/audio/hijaiyah/ha.mp3',
         forms: ['ﺣ', 'ﺤ', 'ﺢ', 'ح'],
         pronounciation: 'Produced from the middle of the throat with friction',
         examples: ['حَمْد (praise)', 'حَبْل (rope)'],
@@ -65,7 +65,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'خ',
         latin: 'Kha',
-        audio: 'kha.mp3',
+        audio: 'assets/audio/hijaiyah/kho.mp3',
         forms: ['ﺧ', 'ﺨ', 'ﺦ', 'خ'],
         pronounciation: 'Produced from the top of the throat with friction',
         examples: ['خَيْر (good)', 'خُبْز (bread)'],
@@ -76,7 +76,8 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'هـ',
         latin: 'Ha (end)',
-        audio: 'ha_end.mp3',
+        audio:
+            'assets/audio/hijaiyah/ha.mp3', // Using standard ha.mp3 as ha_end.mp3 doesn't exist
         forms: ['ﻫ', 'ﻬ', 'ﻪ', 'ه'],
         pronounciation:
             'Produced from the bottom of the throat with an open flow of air',
@@ -92,7 +93,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ج',
         latin: 'Jim',
-        audio: 'jim.mp3',
+        audio: 'assets/audio/hijaiyah/jim.mp3',
         forms: ['ﺟ', 'ﺠ', 'ﺞ', 'ج'],
         pronounciation:
             'Produced from the middle of the tongue touching the roof of the mouth',
@@ -104,7 +105,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ح',
         latin: 'Ha',
-        audio: 'ha.mp3',
+        audio: 'assets/audio/hijaiyah/ha.mp3',
         forms: ['ﺣ', 'ﺤ', 'ﺢ', 'ح'],
         pronounciation: 'Produced from the middle of the throat with friction',
         examples: ['حَمْد (praise)', 'حَبْل (rope)'],
@@ -115,7 +116,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'خ',
         latin: 'Kha',
-        audio: 'kha.mp3',
+        audio: 'assets/audio/hijaiyah/kho.mp3',
         forms: ['ﺧ', 'ﺨ', 'ﺦ', 'خ'],
         pronounciation: 'Produced from the top of the throat with friction',
         examples: ['خَيْر (good)', 'خُبْز (bread)'],
@@ -130,7 +131,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ق',
         latin: 'Qaf',
-        audio: 'qaf.mp3',
+        audio: 'assets/audio/hijaiyah/qof.mp3',
         forms: ['ﻗ', 'ﻘ', 'ﻖ', 'ق'],
         pronounciation:
             'Produced from the back of the tongue touching the soft palate',
@@ -142,7 +143,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ك',
         latin: 'Kaf',
-        audio: 'kaf.mp3',
+        audio: 'assets/audio/hijaiyah/kaf.mp3',
         forms: ['ﻛ', 'ﻜ', 'ﻚ', 'ك'],
         pronounciation:
             'Produced from the back of the tongue touching the roof of the mouth',
@@ -154,7 +155,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ل',
         latin: 'Lam',
-        audio: 'lam.mp3',
+        audio: 'assets/audio/hijaiyah/lam.mp3',
         forms: ['ﻟ', 'ﻠ', 'ﻞ', 'ل'],
         pronounciation:
             'Produced from the sides of the tongue touching the molars',
@@ -170,7 +171,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ص',
         latin: 'Sad',
-        audio: 'sad.mp3',
+        audio: 'assets/audio/hijaiyah/shod.mp3', // Using shod.mp3 for sad
         forms: ['ﺻ', 'ﺼ', 'ﺺ', 'ص'],
         pronounciation:
             'Produced with the tip of the tongue near the teeth with emphasis',
@@ -182,7 +183,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ض',
         latin: 'Dad',
-        audio: 'dad.mp3',
+        audio: 'assets/audio/hijaiyah/dhod.mp3', // Using dhod.mp3 for dad
         forms: ['ﺿ', 'ﻀ', 'ﺾ', 'ض'],
         pronounciation:
             'Produced with the side of the tongue touching the molars with emphasis',
@@ -194,7 +195,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ط',
         latin: 'Ta (heavy)',
-        audio: 'ta_heavy.mp3',
+        audio: 'assets/audio/hijaiyah/tho.mp3', // Using tho.mp3 for ta heavy
         forms: ['ﻃ', 'ﻄ', 'ﻂ', 'ط'],
         pronounciation:
             'Produced with the tip of the tongue touching the base of the front teeth with emphasis',
@@ -210,7 +211,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ء',
         latin: 'Hamzah',
-        audio: 'hamzah.mp3',
+        audio: 'assets/audio/hijaiyah/hamzah.mp3',
         forms: ['ء', 'ء', 'ء', 'ء'],
         pronounciation:
             'Produced from the deepest part of the throat with a glottal stop',
@@ -222,7 +223,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ع',
         latin: 'Ain',
-        audio: 'ain.mp3',
+        audio: 'assets/audio/hijaiyah/ain.mp3',
         forms: ['ﻋ', 'ﻌ', 'ﻊ', 'ع'],
         pronounciation:
             'Produced from the middle of the throat with constriction',
@@ -234,7 +235,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'غ',
         latin: 'Ghain',
-        audio: 'ghain.mp3',
+        audio: 'assets/audio/hijaiyah/ghoin.mp3', // Using ghoin.mp3 for ghain
         forms: ['ﻏ', 'ﻐ', 'ﻎ', 'غ'],
         pronounciation:
             'Produced from the top of the throat with friction and vibration',
@@ -250,7 +251,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'س',
         latin: 'Sin',
-        audio: 'sin.mp3',
+        audio: 'assets/audio/hijaiyah/sin.mp3',
         forms: ['ﺳ', 'ﺴ', 'ﺲ', 'س'],
         pronounciation:
             'Produced with the tip of the tongue near the teeth with a hissing sound',
@@ -262,7 +263,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ز',
         latin: 'Zain',
-        audio: 'zain.mp3',
+        audio: 'assets/audio/hijaiyah/zay.mp3', // Using zay.mp3 for zain
         forms: ['ﺯ', 'ﺰ', 'ﺰ', 'ز'],
         pronounciation:
             'Produced with the tip of the tongue near the teeth with vibration',
@@ -274,7 +275,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ف',
         latin: 'Fa',
-        audio: 'fa.mp3',
+        audio: 'assets/audio/hijaiyah/fa.mp3',
         forms: ['ﻓ', 'ﻔ', 'ﻒ', 'ف'],
         pronounciation: 'Produced with the bottom lip against the upper teeth',
         examples: ['فَتْح (opening)', 'فَجْر (dawn)'],
@@ -289,7 +290,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ر',
         latin: 'Ra',
-        audio: 'ra.mp3',
+        audio: 'assets/audio/hijaiyah/ro.mp3', // Using ro.mp3 for ra
         forms: ['ﺭ', 'ﺮ', 'ﺮ', 'ر'],
         pronounciation:
             'Produced by tapping the tip of the tongue on the roof of the mouth',
@@ -301,7 +302,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'ن',
         latin: 'Nun',
-        audio: 'nun.mp3',
+        audio: 'assets/audio/hijaiyah/nun.mp3',
         forms: ['ﻧ', 'ﻨ', 'ﻦ', 'ن'],
         pronounciation:
             'Produced with the tip of the tongue behind the front teeth with nasalization',
@@ -313,7 +314,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'م',
         latin: 'Mim',
-        audio: 'mim.mp3',
+        audio: 'assets/audio/hijaiyah/mim.mp3',
         forms: ['ﻣ', 'ﻤ', 'ﻢ', 'م'],
         pronounciation:
             'Produced with the lips pressed together with nasalization',
@@ -329,7 +330,8 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'بَ',
         latin: 'Ba (fathah)',
-        audio: 'ba_fathah.mp3',
+        audio:
+            'assets/audio/hijaiyah/ba.mp3', // Using ba.mp3 since specific vowel files don't exist
         forms: ['ﺑَ', 'ﺒَ', 'ﺐَ', 'بَ'],
         pronounciation: 'Ba with short "a" sound',
         examples: ['بَاب (door)', 'بَلَد (country)'],
@@ -340,7 +342,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'بِ',
         latin: 'Bi (kasrah)',
-        audio: 'bi_kasrah.mp3',
+        audio: 'assets/audio/hijaiyah/ba.mp3', // Using ba.mp3
         forms: ['ﺑِ', 'ﺒِ', 'ﺐِ', 'بِ'],
         pronounciation: 'Ba with short "i" sound',
         examples: ['بِنْت (girl)', 'بِئْر (well)'],
@@ -351,7 +353,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'بُ',
         latin: 'Bu (dammah)',
-        audio: 'bu_dammah.mp3',
+        audio: 'assets/audio/hijaiyah/ba.mp3', // Using ba.mp3
         forms: ['ﺑُ', 'ﺒُ', 'ﺐُ', 'بُ'],
         pronounciation: 'Ba with short "u" sound',
         examples: ['بُسْتَان (garden)', 'بُرْج (tower)'],
@@ -366,7 +368,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'بً',
         latin: 'Ban (fathatain)',
-        audio: 'ban_fathatain.mp3',
+        audio: 'assets/audio/hijaiyah/ba.mp3', // Using ba.mp3
         forms: ['ﺑً', 'ﺒً', 'ﺐً', 'بً'],
         pronounciation: 'Ba with double fathah, pronounced as "ban"',
         examples: ['كِتَابًا (a book)', 'شُكْرًا (thank you)'],
@@ -377,7 +379,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'بٍ',
         latin: 'Bin (kasratain)',
-        audio: 'bin_kasratain.mp3',
+        audio: 'assets/audio/hijaiyah/ba.mp3', // Using ba.mp3
         forms: ['ﺑٍ', 'ﺒٍ', 'ﺐٍ', 'بٍ'],
         pronounciation: 'Ba with double kasrah, pronounced as "bin"',
         examples: ['بِسْمِ (in the name of)', 'بِكَلِمَةٍ (with a word)'],
@@ -388,7 +390,7 @@ class AdvancedHijaiyahDataProvider {
       AdvancedHijaiyahLetter(
         arabic: 'بٌ',
         latin: 'Bun (dammatain)',
-        audio: 'bun_dammatain.mp3',
+        audio: 'assets/audio/hijaiyah/ba.mp3', // Using ba.mp3
         forms: ['ﺑٌ', 'ﺒٌ', 'ﺐٌ', 'بٌ'],
         pronounciation: 'Ba with double dammah, pronounced as "bun"',
         examples: ['كِتَابٌ (a book)', 'بَابٌ (a door)'],

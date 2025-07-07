@@ -130,13 +130,18 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // Load YouTube videos from service
-  Future<void> _loadYoutubeVideos() async {
+  // Load YouTube videos from service with caching
+  Future<void> _loadYoutubeVideos({bool forceRefresh = false}) async {
     setState(() {
       _loadingYoutubeVideos = true;
     });
 
     try {
+      // Clear cache if forcing refresh
+      if (forceRefresh) {
+        await _youtubeService.clearIslamicVideosCache();
+      }
+
       final videos = await _youtubeService.getIslamicStudyVideos();
 
       setState(() {
@@ -815,7 +820,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // AI Feature Button - Tambahkan di bagian atas
-                                  const AIFeatureButton(),
+                                  const Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: 10,
+                                      top: 5,
+                                    ),
+                                    child: AIFeatureButton(),
+                                  ),
 
                                   // Bookmarks Horizontal List
                                   Container(
@@ -1411,6 +1422,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),
                                                 ],
                                               ),
+                                            ),
+                                            // Refresh button
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.refresh,
+                                                color: Color(0xFF219EBC),
+                                                size: 20,
+                                              ),
+                                              onPressed: () =>
+                                                  _loadYoutubeVideos(
+                                                    forceRefresh: true,
+                                                  ),
+                                              tooltip:
+                                                  'Refresh dan hapus cache',
+                                              padding: EdgeInsets.zero,
+                                              constraints:
+                                                  const BoxConstraints(),
                                             ),
                                             TextButton(
                                               onPressed: () {

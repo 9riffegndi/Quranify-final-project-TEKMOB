@@ -15,13 +15,19 @@ class _YouTubeVideosScreenState extends State<YouTubeVideosScreen> {
   List<Map<String, dynamic>> _videos = [];
   String? _errorMessage;
 
-  Future<void> _loadVideos() async {
+  // Load videos, with option to force refresh (clears cache)
+  Future<void> _loadVideos({bool forceRefresh = false}) async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
     try {
+      // Clear cache if forcing refresh
+      if (forceRefresh) {
+        await _youtubeService.clearIslamicVideosCache();
+      }
+
       final videos = await _youtubeService.getIslamicStudyVideos();
       setState(() {
         _videos = videos;
@@ -75,7 +81,11 @@ class _YouTubeVideosScreenState extends State<YouTubeVideosScreen> {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         actions: [
-          IconButton(icon: const Icon(Icons.refresh), onPressed: _loadVideos),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () => _loadVideos(forceRefresh: true),
+            tooltip: 'Refresh dan hapus cache',
+          ),
         ],
       ),
       body: _isLoading

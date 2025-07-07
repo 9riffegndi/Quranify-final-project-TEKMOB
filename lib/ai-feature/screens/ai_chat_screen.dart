@@ -21,7 +21,7 @@ class _AIChatScreenState extends State<AIChatScreen> {
   final ScrollController _scrollController = ScrollController();
   final List<ChatMessage> _messages = [];
   final _uuid = const Uuid();
-  
+
   bool _isLoading = false;
   bool _isInitialized = false;
 
@@ -34,23 +34,25 @@ class _AIChatScreenState extends State<AIChatScreen> {
   Future<void> _initializeChat() async {
     // Load chat history
     final history = await _chatService.loadChatHistory();
-    
+
     setState(() {
       if (history.isNotEmpty) {
         _messages.addAll(history);
       } else {
         // Add welcome message
-        _messages.add(ChatMessage(
-          id: _uuid.v4(),
-          text: AIConfig.welcomeMessage,
-          isUser: false,
-          timestamp: DateTime.now(),
-          type: MessageType.text,
-        ));
+        _messages.add(
+          ChatMessage(
+            id: _uuid.v4(),
+            text: AIConfig.welcomeMessage,
+            isUser: false,
+            timestamp: DateTime.now(),
+            type: MessageType.text,
+          ),
+        );
       }
       _isInitialized = true;
     });
-    
+
     _scrollToBottom();
   }
 
@@ -82,13 +84,15 @@ class _AIChatScreenState extends State<AIChatScreen> {
       _messages.add(userMessage);
       _isLoading = true;
       // Add loading message
-      _messages.add(ChatMessage(
-        id: _uuid.v4(),
-        text: '',
-        isUser: false,
-        timestamp: DateTime.now(),
-        type: MessageType.loading,
-      ));
+      _messages.add(
+        ChatMessage(
+          id: _uuid.v4(),
+          text: '',
+          isUser: false,
+          timestamp: DateTime.now(),
+          type: MessageType.loading,
+        ),
+      );
     });
 
     _scrollToBottom();
@@ -121,18 +125,20 @@ class _AIChatScreenState extends State<AIChatScreen> {
 
       // Save chat history
       await _chatService.saveChatHistory(_messages);
-
     } catch (e) {
       setState(() {
         // Remove loading message
         _messages.removeWhere((msg) => msg.type == MessageType.loading);
-        _messages.add(ChatMessage(
-          id: _uuid.v4(),
-          text: 'Maaf, terjadi kesalahan. Silakan coba lagi dalam beberapa saat.',
-          isUser: false,
-          timestamp: DateTime.now(),
-          type: MessageType.text,
-        ));
+        _messages.add(
+          ChatMessage(
+            id: _uuid.v4(),
+            text:
+                'Maaf, terjadi kesalahan. Silakan coba lagi dalam beberapa saat.',
+            isUser: false,
+            timestamp: DateTime.now(),
+            type: MessageType.text,
+          ),
+        );
         _isLoading = false;
       });
     }
@@ -146,8 +152,11 @@ class _AIChatScreenState extends State<AIChatScreen> {
         .replaceAll(RegExp(r'\*\*(.*?)\*\*'), r'$1') // Remove bold
         .replaceAll(RegExp(r'\*(.*?)\*'), r'$1') // Remove italic
         .replaceAll(RegExp(r'#{1,6}\s'), '') // Remove headers
-        .replaceAll(RegExp(r'^\s*[-*+]\s', multiLine: true), '• '); // Convert lists
-    
+        .replaceAll(
+          RegExp(r'^\s*[-*+]\s', multiLine: true),
+          '• ',
+        ); // Convert lists
+
     Clipboard.setData(ClipboardData(text: cleanText));
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -162,7 +171,9 @@ class _AIChatScreenState extends State<AIChatScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Hapus Riwayat Chat'),
-        content: const Text('Apakah Anda yakin ingin menghapus semua riwayat chat?'),
+        content: const Text(
+          'Apakah Anda yakin ingin menghapus semua riwayat chat?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -231,22 +242,17 @@ class _AIChatScreenState extends State<AIChatScreen> {
                       final message = _messages[index];
                       return ChatMessageWidget(
                         message: message,
-                        onCopy: message.isUser 
-                            ? null 
+                        onCopy: message.isUser
+                            ? null
                             : () => _copyToClipboard(message.text),
                       );
                     },
                   )
-                : const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                : const Center(child: CircularProgressIndicator()),
           ),
-          
+
           // Input area
-          ChatInputWidget(
-            onSendMessage: _sendMessage,
-            isLoading: _isLoading,
-          ),
+          ChatInputWidget(onSendMessage: _sendMessage, isLoading: _isLoading),
         ],
       ),
     );

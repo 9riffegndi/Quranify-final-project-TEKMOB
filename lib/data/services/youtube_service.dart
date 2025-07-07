@@ -1,15 +1,46 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../config/youtube_config.dart';
 
 class YouTubeService {
+  // Cache keys and expiration time
+  static const String _kIslamicVideosCache = 'islamic_videos_cache';
+  static const String _kChannelVideosCache = 'channel_videos_cache_';
+  static const String _kCacheTimestampKey = 'cache_timestamp_';
+  static const int _cacheDurationHours = 12; // Cache expires after 12 hours
   // Using API key and base URL from config
   final String _apiKey = YouTubeConfig.apiKey;
   final String _baseUrl = YouTubeConfig.baseUrl;
 
-  // Fetch Islamic study videos
+  // Fetch Islamic study videos with caching
   Future<List<Map<String, dynamic>>> getIslamicStudyVideos() async {
     try {
+      // Check if we have valid cached data
+      final prefs = await SharedPreferences.getInstance();
+      final cachedData = prefs.getString(_kIslamicVideosCache);
+      final cachedTimestamp = prefs.getInt(
+        '${_kCacheTimestampKey}$_kIslamicVideosCache',
+      );
+
+      // If we have cached data and it's not expired, use it
+      if (cachedData != null && cachedTimestamp != null) {
+        final currentTime = DateTime.now().millisecondsSinceEpoch;
+        final cacheAge = currentTime - cachedTimestamp;
+        final cacheExpiration =
+            _cacheDurationHours * 60 * 60 * 1000; // hours to milliseconds
+
+        if (cacheAge < cacheExpiration) {
+          print('Using cached Islamic study videos data');
+          return List<Map<String, dynamic>>.from(
+            jsonDecode(
+              cachedData,
+            ).map((item) => Map<String, dynamic>.from(item)),
+          );
+        }
+      }
+
+      // Cache expired or doesn't exist, fetch new data
       // Select a random keyword from the Islamic keywords list
       final keyword =
           YouTubeConfig.islamicKeywords[DateTime.now().microsecond %
@@ -72,18 +103,55 @@ class YouTubeService {
             }
           }
 
+          // Save the result to cache
+          if (videos.isNotEmpty) {
+            await prefs.setString(_kIslamicVideosCache, jsonEncode(videos));
+            await prefs.setInt(
+              '${_kCacheTimestampKey}$_kIslamicVideosCache',
+              DateTime.now().millisecondsSinceEpoch,
+            );
+            print('Saved Islamic study videos to cache');
+          }
+
           return videos;
         }
+      }
+
+      // If API fails but we have outdated cache, still use it as fallback
+      if (cachedData != null) {
+        print('Using expired cached Islamic study videos as fallback');
+        return List<Map<String, dynamic>>.from(
+          jsonDecode(cachedData).map((item) => Map<String, dynamic>.from(item)),
+        );
       }
 
       return _getDummyVideos(); // Return dummy data in case of error
     } catch (e) {
       print('YouTube API Error: $e');
+
+      // Try to use expired cache as fallback in case of exception
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        final cachedData = prefs.getString(_kIslamicVideosCache);
+        if (cachedData != null) {
+          print(
+            'Using expired cached Islamic study videos as fallback after error',
+          );
+          return List<Map<String, dynamic>>.from(
+            jsonDecode(
+              cachedData,
+            ).map((item) => Map<String, dynamic>.from(item)),
+          );
+        }
+      } catch (_) {
+        // If error accessing cache, continue to dummy data
+      }
+
       return _getDummyVideos(); // Return dummy data in case of error
     }
   }
 
-  // Fetch videos from a specific Islamic channel
+  // Fetch videos from a specific Islamic channel with caching
   Future<List<Map<String, dynamic>>> getChannelVideos(String channelKey) async {
     try {
       // Get the channel ID from the config
@@ -92,6 +160,31 @@ class YouTubeService {
       if (channelId == null) {
         print('Invalid channel key: $channelKey');
         return _getDummyVideos();
+      }
+
+      // Create a unique cache key for this channel
+      final channelCacheKey = '${_kChannelVideosCache}$channelKey';
+
+      // Check if we have valid cached data for this channel
+      final prefs = await SharedPreferences.getInstance();
+      final cachedData = prefs.getString(channelCacheKey);
+      final cachedTimestamp = prefs.getInt('${_kCacheTimestampKey}$channelKey');
+
+      // If we have cached data and it's not expired, use it
+      if (cachedData != null && cachedTimestamp != null) {
+        final currentTime = DateTime.now().millisecondsSinceEpoch;
+        final cacheAge = currentTime - cachedTimestamp;
+        final cacheExpiration =
+            _cacheDurationHours * 60 * 60 * 1000; // hours to milliseconds
+
+        if (cacheAge < cacheExpiration) {
+          print('Using cached channel videos data for: $channelKey');
+          return List<Map<String, dynamic>>.from(
+            jsonDecode(
+              cachedData,
+            ).map((item) => Map<String, dynamic>.from(item)),
+          );
+        }
       }
 
       // Set up search parameters for videos from this channel
@@ -152,13 +245,54 @@ class YouTubeService {
             }
           }
 
+          // Save the result to cache
+          if (videos.isNotEmpty) {
+            await prefs.setString(channelCacheKey, jsonEncode(videos));
+            await prefs.setInt(
+              '${_kCacheTimestampKey}$channelKey',
+              DateTime.now().millisecondsSinceEpoch,
+            );
+            print('Saved channel videos to cache for: $channelKey');
+          }
+
           return videos;
         }
+      }
+
+      // If API fails but we have outdated cache, still use it as fallback
+      if (cachedData != null) {
+        print(
+          'Using expired cached channel videos as fallback for: $channelKey',
+        );
+        return List<Map<String, dynamic>>.from(
+          jsonDecode(cachedData).map((item) => Map<String, dynamic>.from(item)),
+        );
       }
 
       return _getDummyVideos(); // Return dummy data in case of error
     } catch (e) {
       print('YouTube Channel API Error: $e');
+
+      // Try to use expired cache as fallback in case of exception
+      try {
+        final channelCacheKey = '${_kChannelVideosCache}$channelKey';
+        final prefs = await SharedPreferences.getInstance();
+        final cachedData = prefs.getString(channelCacheKey);
+
+        if (cachedData != null) {
+          print(
+            'Using expired cached channel videos as fallback after error for: $channelKey',
+          );
+          return List<Map<String, dynamic>>.from(
+            jsonDecode(
+              cachedData,
+            ).map((item) => Map<String, dynamic>.from(item)),
+          );
+        }
+      } catch (_) {
+        // If error accessing cache, continue to dummy data
+      }
+
       return _getDummyVideos();
     }
   }
@@ -171,6 +305,61 @@ class YouTubeService {
   // Get list of Islamic keywords
   List<String> getIslamicKeywords() {
     return YouTubeConfig.islamicKeywords;
+  }
+
+  // Clear all YouTube API caches
+  Future<void> clearAllCaches() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      // Get all keys that start with our cache prefixes
+      final allKeys = prefs.getKeys();
+      final cacheKeys = allKeys
+          .where(
+            (key) =>
+                key == _kIslamicVideosCache ||
+                key.startsWith(_kChannelVideosCache) ||
+                key.startsWith(_kCacheTimestampKey),
+          )
+          .toList();
+
+      // Remove all cache entries
+      for (var key in cacheKeys) {
+        await prefs.remove(key);
+      }
+
+      print('Cleared all YouTube API caches (${cacheKeys.length} entries)');
+    } catch (e) {
+      print('Error clearing YouTube API caches: $e');
+    }
+  }
+
+  // Clear cache for a specific channel
+  Future<void> clearChannelCache(String channelKey) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final channelCacheKey = '${_kChannelVideosCache}$channelKey';
+      final timestampKey = '${_kCacheTimestampKey}$channelKey';
+
+      await prefs.remove(channelCacheKey);
+      await prefs.remove(timestampKey);
+
+      print('Cleared cache for channel: $channelKey');
+    } catch (e) {
+      print('Error clearing channel cache: $e');
+    }
+  }
+
+  // Clear Islamic videos cache
+  Future<void> clearIslamicVideosCache() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_kIslamicVideosCache);
+      await prefs.remove('${_kCacheTimestampKey}$_kIslamicVideosCache');
+
+      print('Cleared Islamic videos cache');
+    } catch (e) {
+      print('Error clearing Islamic videos cache: $e');
+    }
   }
 
   // Format ISO 8601 duration to human-readable format
@@ -248,7 +437,8 @@ class YouTubeService {
         'title': 'Kajian Tafsir Al-Quran Surat Al-Baqarah',
         'channelName': 'Ustadz Abdul Somad',
         'duration': '45:22',
-        'thumbnailUrl': '../../../assets/images/thumbnail/ustadz 1.jpg', // Using app assets
+        'thumbnailUrl':
+            '../../../assets/images/thumbnail/ustadz 1.jpg', // Using app assets
         'views': '245K',
         'uploadedAt': '2 minggu yang lalu',
       },
@@ -257,7 +447,8 @@ class YouTubeService {
         'title': 'Memahami Hadist Shahih Bukhari',
         'channelName': 'Ustadz Adi Hidayat',
         'duration': '38:15',
-        'thumbnailUrl': '../../../assets/images/thumbnail/ustadz 2.jpg', // Using app assets
+        'thumbnailUrl':
+            '../../../assets/images/thumbnail/ustadz 2.jpg', // Using app assets
         'views': '128K',
         'uploadedAt': '3 minggu yang lalu',
       },
@@ -266,7 +457,8 @@ class YouTubeService {
         'title': 'Tafsir Surah Yasin',
         'channelName': 'Ustadz Hanan Attaki',
         'duration': '52:10',
-        'thumbnailUrl': '../../../assets/images/thumbnail/ustadz 3.jpg', // Using app assets
+        'thumbnailUrl':
+            '../../../assets/images/thumbnail/ustadz 3.jpg', // Using app assets
         'views': '320K',
         'uploadedAt': '1 bulan yang lalu',
       },
@@ -275,7 +467,8 @@ class YouTubeService {
         'title': 'Memahami Asmaul Husna',
         'channelName': 'Ustadz Felix Siauw',
         'duration': '41:25',
-        'thumbnailUrl': '../../../assets/images/thumbnail/ustadz 4.jpg', // Using app assets
+        'thumbnailUrl':
+            '../../../assets/images/thumbnail/ustadz 4.jpg', // Using app assets
         'views': '180K',
         'uploadedAt': '3 minggu yang lalu',
       },
@@ -284,7 +477,8 @@ class YouTubeService {
         'title': 'Kisah Para Nabi dan Rasul',
         'channelName': 'Ustadz Khalid Basalamah',
         'duration': '58:30',
-        'thumbnailUrl': '../../../assets/images/thumbnail/ustadz 5.jpg', // Using app assets
+        'thumbnailUrl':
+            '../../../assets/images/thumbnail/ustadz 5.jpg', // Using app assets
         'views': '275K',
         'uploadedAt': '1 bulan yang lalu',
       },

@@ -27,13 +27,15 @@ dependencies:
   flutter_svg: ^2.0.10  # For rendering SVG images
   # AI Dependencies
   google_generative_ai: ^0.4.3  # For Google Gemini AI
-  speech_to_text: ^6.6.0  # For voice input
+  # Temporarily disabled speech_to_text due to compatibility issues
+  # Will need to implement manual text input instead of voice
   flutter_markdown: ^0.6.18  # For displaying AI responses
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true
@@ -41,3 +43,12 @@ flutter:
   assets:
     - assets/images/   # ✅ Folder gambar/icon
     - assets/audio/    # ✅ Folder audio
+
+# Flutter Launcher Icons configuration
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/icon-launcher.png"
+  adaptive_icon_background: "#FFFFFF" # or any color you prefer
+  adaptive_icon_foreground: "assets/images/icon-launcher.png"
+  remove_alpha_ios: true

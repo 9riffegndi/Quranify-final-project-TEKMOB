@@ -1,6 +1,6 @@
 {
-    "name": "quranify",
-    "short_name": "quranify",
+    "name": "Quranify",
+    "short_name": "Quranify",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#219EBC",
