@@ -8,6 +8,8 @@ import '../../../routes/routes.dart';
 import '../../../data/services/quran/bookmark_service.dart';
 import '../../../data/services/hadith/bookmark_service.dart';
 import '../../../data/services/youtube_service.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import '../../../ai-feature/widgets/ai_feature_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -812,6 +814,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // AI Feature Button - Tambahkan di bagian atas
+                                  const AIFeatureButton(),
+
                                   // Bookmarks Horizontal List
                                   Container(
                                     width: double.infinity,
@@ -1887,7 +1892,6 @@ class BookmarkItem extends StatelessWidget {
         margin: const EdgeInsets.only(right: 12),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
               color: const Color(0xFF219EBC).withOpacity(0.15),
