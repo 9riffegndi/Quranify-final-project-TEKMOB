@@ -96,8 +96,8 @@ class BaseFunLearnScreen extends StatelessWidget {
               Navigator.pushNamed(context, AppRoutes.kidsFunLearn);
             },
             color: const Color(0xFF50C6E4),
-            leftImage: '../../../../assets/images/quiz/hallo.png',
-            rightImage: '../../../../assets/images/quiz/ngaji.png',
+            leftImage: 'assets/images/quiz/hallo.png',
+            rightImage: 'assets/images/quiz/ngaji.png',
             label: 'ANAK',
           ),
 
@@ -108,7 +108,7 @@ class BaseFunLearnScreen extends StatelessWidget {
             onTap: () =>
                 Navigator.pushNamed(context, AppRoutes.generalFunLearn),
             color: const Color(0xFF50C6E4),
-            image: '../../../../assets/images/quiz/hallo_general.png',
+            image: 'assets/images/quiz/hallo_general.png',
             label: 'UMUM',
           ),
           const SizedBox(height: 24),

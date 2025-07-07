@@ -418,7 +418,7 @@ class _GeneralTajwidGameScreenState extends State<GeneralTajwidGameScreen>
               ).pop(true); // Return to level selection with refresh signal
             },
             child: const Text(
-              'Back to Levels',
+              'Kembali ke Level',
               style: TextStyle(color: Color(0xFF219EBC)),
             ),
           ),
@@ -440,7 +440,7 @@ class _GeneralTajwidGameScreenState extends State<GeneralTajwidGameScreen>
               backgroundColor: const Color(0xFF219EBC),
             ),
             child: const Text(
-              'Play Again',
+              'Main Lagi',
               style: TextStyle(color: Colors.white),
             ),
           ),

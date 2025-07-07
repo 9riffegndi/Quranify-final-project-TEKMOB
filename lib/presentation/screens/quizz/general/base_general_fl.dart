@@ -64,7 +64,7 @@ class BaseGeneralFLScreen extends StatelessWidget {
                   children: [
                     // General mode image
                     Image.asset(
-                      '../../../../../assets/images/quiz/hallo_general.png',
+                      'assets/images/quiz/hallo_general.png',
                       height: 250,
                       fit: BoxFit.contain,
                     ),

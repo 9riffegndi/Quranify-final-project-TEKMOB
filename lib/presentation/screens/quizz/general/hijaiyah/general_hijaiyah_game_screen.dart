@@ -337,7 +337,7 @@ class _GeneralHijaiyahGameScreenState extends State<GeneralHijaiyahGameScreen>
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: const Text(
-          'Level Complete',
+          'Level Selesai',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Color(0xFF219EBC),
@@ -372,7 +372,7 @@ class _GeneralHijaiyahGameScreenState extends State<GeneralHijaiyahGameScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Final Score: $_score',
+                    'Skor Akhir: $_score',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -380,15 +380,15 @@ class _GeneralHijaiyahGameScreenState extends State<GeneralHijaiyahGameScreen>
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Accuracy: ${_accuracy.toStringAsFixed(1)}%',
+                    'Akurasi: ${_accuracy.toStringAsFixed(1)}%',
                     style: TextStyle(
                       color: _getAccuracyColor(_accuracy),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Text('Correct Answers: $_correctAnswers'),
-                  Text('Wrong Answers: $_wrongAnswers'),
-                  Text('Max Streak: $_maxStreak'),
+                  Text('Jawaban Benar: $_correctAnswers'),
+                  Text('Jawaban Salah: $_wrongAnswers'),
+                  Text('Rentetan Terbaik: $_maxStreak'),
                 ],
               ),
             ),
@@ -403,7 +403,7 @@ class _GeneralHijaiyahGameScreenState extends State<GeneralHijaiyahGameScreen>
               ).pop(true); // Return to level selection with refresh signal
             },
             child: const Text(
-              'Back to Levels',
+              'Kembali ke Level',
               style: TextStyle(color: Color(0xFF219EBC)),
             ),
           ),
@@ -424,7 +424,7 @@ class _GeneralHijaiyahGameScreenState extends State<GeneralHijaiyahGameScreen>
               backgroundColor: const Color(0xFF219EBC),
             ),
             child: const Text(
-              'Play Again',
+              'Main Lagi',
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -446,17 +446,17 @@ class _GeneralHijaiyahGameScreenState extends State<GeneralHijaiyahGameScreen>
   String _getQuestionText() {
     switch (_questionType) {
       case 'arabic_to_latin':
-        return 'What is the name of this letter?';
+        return 'Apa nama huruf ini?';
       case 'latin_to_arabic':
-        return 'Which letter is "${_currentQuestion.latin}"?';
+        return 'Huruf mana yang disebut "${_currentQuestion.latin}"?';
       case 'makhraj':
-        return 'Where is the makhraj (articulation point) of this letter?';
+        return 'Dimana makhraj (titik artikulasi) dari huruf ini?';
       case 'form':
         // Pick a random form from the forms array
         final randomFormIndex = Random().nextInt(_currentQuestion.forms.length);
-        return 'Which letter is shown in this form: ${_currentQuestion.forms[randomFormIndex]}?';
+        return 'Huruf apa yang ditampilkan dalam bentuk ini: ${_currentQuestion.forms[randomFormIndex]}?';
       default:
-        return 'Identify this letter:';
+        return 'Identifikasi huruf ini:';
     }
   }
 
@@ -495,7 +495,7 @@ class _GeneralHijaiyahGameScreenState extends State<GeneralHijaiyahGameScreen>
             ),
             const SizedBox(height: 8),
             const Text(
-              "Where is this letter pronounced from?",
+              "Dari mana huruf ini dilafalkan?",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
             ),
@@ -512,7 +512,7 @@ class _GeneralHijaiyahGameScreenState extends State<GeneralHijaiyahGameScreen>
             ),
             const SizedBox(height: 8),
             const Text(
-              "Which letter is this form?",
+              "Huruf apa bentuk ini?",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
             ),
@@ -546,7 +546,7 @@ class _GeneralHijaiyahGameScreenState extends State<GeneralHijaiyahGameScreen>
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                'Score: $_score',
+                'Skor: $_score',
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -569,7 +569,7 @@ class _GeneralHijaiyahGameScreenState extends State<GeneralHijaiyahGameScreen>
                 children: [
                   // Question counter
                   Text(
-                    'Question ${_questionIndex + 1}/$_totalQuestions',
+                    'Pertanyaan ${_questionIndex + 1}/$_totalQuestions',
                     style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
@@ -611,13 +611,11 @@ class _GeneralHijaiyahGameScreenState extends State<GeneralHijaiyahGameScreen>
                                 : const Color(0xFF219EBC)),
                     ),
                     minHeight: 20,
-                  ),
-
-                  // Time left
+                  ), // Time left
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Text(
-                      '$_timeLeft s',
+                      '$_timeLeft det',
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

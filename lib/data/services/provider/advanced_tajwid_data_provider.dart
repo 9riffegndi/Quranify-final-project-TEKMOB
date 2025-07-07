@@ -9,12 +9,12 @@ class AdvancedTajwidDataProvider {
 
   /// Get level title
   static String getLevelTitle(int level) {
-    return _levelTitles[level] ?? 'Unknown Level';
+    return _levelTitles[level] ?? 'Level Tidak Dikenal';
   }
 
   /// Get level description
   static String getLevelDescription(int level) {
-    return _levelDescriptions[level] ?? 'No description available';
+    return _levelDescriptions[level] ?? 'Deskripsi tidak tersedia';
   }
 
   /// Level titles
@@ -62,7 +62,7 @@ class AdvancedTajwidDataProvider {
         category: 'Nun Sakinah & Tanwin',
         color: '#FF6B6B',
         letters: ['ء', 'ه', 'ع', 'ح', 'غ', 'خ'],
-        audio: 'idzhar.mp3',
+        audio: 'assets/audio/hijaiyah/hamzah.mp3',
         difficulty: 2,
       ),
       AdvancedTajwidRule(
@@ -78,7 +78,7 @@ class AdvancedTajwidDataProvider {
         category: 'Nun Sakinah & Tanwin',
         color: '#4ECDC4',
         letters: ['ي', 'ر', 'م', 'ل', 'و', 'ن'],
-        audio: 'idgham.mp3',
+        audio: 'assets/audio/hijaiyah/ya.mp3',
         difficulty: 3,
       ),
       AdvancedTajwidRule(
@@ -110,7 +110,7 @@ class AdvancedTajwidDataProvider {
           'ق',
           'ك',
         ],
-        audio: 'ikhfa.mp3',
+        audio: 'assets/audio/hijaiyah/ta.mp3',
         difficulty: 4,
       ),
       AdvancedTajwidRule(
@@ -126,7 +126,7 @@ class AdvancedTajwidDataProvider {
         category: 'Nun Sakinah & Tanwin',
         color: '#96CEB4',
         letters: ['ب'],
-        audio: 'iqlab.mp3',
+        audio: 'assets/audio/hijaiyah/ba.mp3',
         difficulty: 3,
       ),
     ],
@@ -150,7 +150,7 @@ class AdvancedTajwidDataProvider {
         category: 'Mim Sakinah',
         color: '#F7DC6F',
         letters: ['ب'],
-        audio: 'ikhfa_shafawi.mp3',
+        audio: 'assets/audio/hijaiyah/ba.mp3',
         difficulty: 3,
       ),
       AdvancedTajwidRule(
@@ -166,7 +166,7 @@ class AdvancedTajwidDataProvider {
         category: 'Mim Sakinah',
         color: '#BB8FCE',
         letters: ['م'],
-        audio: 'idgham_shafawi.mp3',
+        audio: 'assets/audio/hijaiyah/mim.mp3',
         difficulty: 2,
       ),
       AdvancedTajwidRule(
@@ -209,7 +209,7 @@ class AdvancedTajwidDataProvider {
           'و',
           'ي',
         ],
-        audio: 'idzhar_shafawi.mp3',
+        audio: 'assets/audio/hijaiyah/mim.mp3',
         difficulty: 2,
       ),
     ],
@@ -229,7 +229,7 @@ class AdvancedTajwidDataProvider {
         category: 'Qalqalah',
         color: '#F8C471',
         letters: ['ق', 'ط', 'ب', 'ج', 'د'],
-        audio: 'qalqalah_sughra.mp3',
+        audio: 'assets/audio/hijaiyah/qof.mp3',
         difficulty: 3,
       ),
       AdvancedTajwidRule(
@@ -245,7 +245,7 @@ class AdvancedTajwidDataProvider {
         category: 'Qalqalah',
         color: '#DC7633',
         letters: ['ق', 'ط', 'ب', 'ج', 'د'],
-        audio: 'qalqalah_kubra.mp3',
+        audio: 'assets/audio/hijaiyah/qof.mp3',
         difficulty: 4,
       ),
     ],
@@ -265,7 +265,7 @@ class AdvancedTajwidDataProvider {
         category: 'Mad',
         color: '#58D68D',
         letters: ['ا', 'و', 'ي'],
-        audio: 'mad_thobi.mp3',
+        audio: 'assets/audio/hijaiyah/alif.mp3',
         difficulty: 2,
       ),
       AdvancedTajwidRule(
@@ -281,7 +281,7 @@ class AdvancedTajwidDataProvider {
         category: 'Mad',
         color: '#5DADE2',
         letters: ['ا', 'و', 'ي'],
-        audio: 'mad_wajib_muttasil.mp3',
+        audio: 'assets/audio/hijaiyah/alif.mp3',
         difficulty: 4,
       ),
       AdvancedTajwidRule(
@@ -301,7 +301,7 @@ class AdvancedTajwidDataProvider {
         category: 'Mad',
         color: '#AF7AC5',
         letters: ['ا', 'و', 'ي'],
-        audio: 'mad_jaiz_munfasil.mp3',
+        audio: 'assets/audio/hijaiyah/alif.mp3',
         difficulty: 5,
       ),
     ],
@@ -321,7 +321,7 @@ class AdvancedTajwidDataProvider {
         category: 'Ra Rules',
         color: '#E74C3C',
         letters: ['ر'],
-        audio: 'ra_tafkhim.mp3',
+        audio: 'assets/audio/hijaiyah/ro.mp3',
         difficulty: 3,
       ),
       AdvancedTajwidRule(
@@ -337,7 +337,7 @@ class AdvancedTajwidDataProvider {
         category: 'Ra Rules',
         color: '#3498DB',
         letters: ['ر'],
-        audio: 'ra_tarqiq.mp3',
+        audio: 'assets/audio/hijaiyah/ro.mp3',
         difficulty: 3,
       ),
     ],
@@ -357,7 +357,7 @@ class AdvancedTajwidDataProvider {
         category: 'Lam Rules',
         color: '#E67E22',
         letters: ['ل'],
-        audio: 'lam_tafkhim.mp3',
+        audio: 'assets/audio/hijaiyah/lam.mp3',
         difficulty: 4,
       ),
       AdvancedTajwidRule(
@@ -372,8 +372,8 @@ class AdvancedTajwidDataProvider {
         pronunciation: 'Tipis dan ringan',
         category: 'Lam Rules',
         color: '#27AE60',
-        letters: ['ل'],
-        audio: 'lam_tarqiq.mp3',
+        letters: ['l'],
+        audio: 'assets/audio/hijaiyah/lam.mp3',
         difficulty: 4,
       ),
     ],
@@ -393,7 +393,7 @@ class AdvancedTajwidDataProvider {
         category: 'Advanced Mad',
         color: '#8E44AD',
         letters: ['ا', 'و', 'ي'],
-        audio: 'mad_lazim.mp3',
+        audio: 'assets/audio/hijaiyah/alif.mp3',
         difficulty: 5,
       ),
       AdvancedTajwidRule(
@@ -409,7 +409,7 @@ class AdvancedTajwidDataProvider {
         category: 'Advanced Mad',
         color: '#16A085',
         letters: ['ا', 'و', 'ي'],
-        audio: 'mad_aridh.mp3',
+        audio: 'assets/audio/hijaiyah/alif.mp3',
         difficulty: 6,
       ),
     ],

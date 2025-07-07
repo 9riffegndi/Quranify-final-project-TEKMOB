@@ -1835,7 +1835,7 @@ class _HomeScreenState extends State<HomeScreen> {
           bottom: true,
           child: Padding(
             // Extra padding at the bottom to ensure space from system navigation
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.only(bottom: 0),
             child: BottomNavigationBar(
               elevation: 8,
               type: BottomNavigationBarType.fixed,
@@ -2255,7 +2255,7 @@ class YouTubeVideoItem extends StatelessWidget {
                     top: Radius.circular(12),
                   ),
                   child: FadeInImage.assetNetwork(
-                    placeholder: 'assets/images/placeholder_thumbnail.png',
+                    placeholder: 'assets/images/logo.png',
                     image: thumbnailUrl,
                     height: 130, // Reduced height to prevent overflow
                     width: double.infinity,

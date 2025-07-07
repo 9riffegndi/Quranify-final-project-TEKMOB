@@ -73,6 +73,9 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen>
 
   @override
   Widget build(BuildContext context) {
+    super.build(
+      context,
+    ); // Diperlukan untuk mixin AutomaticKeepAliveClientMixin
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -83,30 +86,37 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen>
         backgroundColor: const Color(0xFF219EBC),
         foregroundColor: Colors.white,
       ),
-      body: Column(
-        children: [
-          YoutubePlayer(
-            controller: _controller,
-            showVideoProgressIndicator: true,
-            progressIndicatorColor: const Color(0xFF219EBC),
-            progressColors: const ProgressBarColors(
-              playedColor: Color(0xFF219EBC),
-              handleColor: Color(0xFF219EBC),
+      body: !_controllerInitialized
+          ? const Center(
+              child: CircularProgressIndicator(color: Color(0xFF219EBC)),
+            )
+          : Column(
+              children: [
+                YoutubePlayer(
+                  controller: _controller,
+                  showVideoProgressIndicator: true,
+                  progressIndicatorColor: const Color(0xFF219EBC),
+                  progressColors: const ProgressBarColors(
+                    playedColor: Color(0xFF219EBC),
+                    handleColor: Color(0xFF219EBC),
+                  ),
+                  onReady: () {
+                    _isPlayerReady = true;
+                  },
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    widget.title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            onReady: () {
-              _isPlayerReady = true;
-            },
-          ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              widget.title,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

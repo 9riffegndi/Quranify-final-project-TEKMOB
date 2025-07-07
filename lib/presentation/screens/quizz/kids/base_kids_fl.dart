@@ -64,7 +64,7 @@ class BaseKidsFLScreen extends StatelessWidget {
                   children: [
                     // Kids mode image
                     Image.asset(
-                      '../../../../../assets/images/quiz/kids_mode.png',
+                      'assets/images/quiz/kids_mode.png',
                       height: 250,
                       fit: BoxFit.contain,
                     ),

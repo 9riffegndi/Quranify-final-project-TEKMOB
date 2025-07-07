@@ -41,8 +41,15 @@ flutter:
   uses-material-design: true
 
   assets:
+    # Root folders
     - assets/images/   # ✅ Folder gambar/icon
     - assets/audio/    # ✅ Folder audio
+    - assets/daftarimage/   # ✅ Folder gambar untuk login
+    
+    # Specific subfolders to ensure all assets are included
+    - assets/images/quiz/
+    - assets/images/thumbnail/
+    - assets/audio/hijaiyah/
 
 # Flutter Launcher Icons configuration
 flutter_launcher_icons:

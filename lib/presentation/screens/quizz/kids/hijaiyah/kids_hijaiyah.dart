@@ -329,7 +329,7 @@ class _KidsHijaiyahScreenState extends State<KidsHijaiyahScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: Image.asset(
-              '../../../../../../assets/images/quiz/kids_mode.png',
+              'assets/images/quiz/kids_mode.png',
               height: 150,
               fit: BoxFit.contain,
             ),
