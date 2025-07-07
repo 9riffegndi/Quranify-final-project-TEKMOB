@@ -50,8 +50,6 @@ flutter:
     - assets/images/quiz/
     - assets/images/thumbnail/
     - assets/audio/hijaiyah/
-    - assets/audio/hijaiyah/harakat/
-    - assets/audio/hijaiyah/tanwin/
 
 # Flutter Launcher Icons configuration
 flutter_launcher_icons:
