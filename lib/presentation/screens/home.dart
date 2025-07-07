@@ -506,9 +506,119 @@ class _HomeScreenState extends State<HomeScreen> {
                         310.0, // Increased height for status bar and better mobile display
                     floating: false,
                     pinned: true,
-                    backgroundColor: const Color(0xFF219EBC),
+                    snap: false,
+                    stretch: true, // Enable stretch effect on scroll
+                    elevation: innerBoxIsScrolled
+                        ? 4.0
+                        : 0.0, // Add elevation when scrolled
+                    backgroundColor: innerBoxIsScrolled
+                        ? const Color(
+                            0xFF1A8CAB,
+                          ) // Slightly darker when scrolled
+                        : const Color(0xFF219EBC),
                     automaticallyImplyLeading: false, // Remove back button
+                    // Keep title visible at all times
+                    title: SafeArea(
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        padding: EdgeInsets.only(
+                          top: innerBoxIsScrolled ? 4.0 : 6.0,
+                          bottom: innerBoxIsScrolled ? 4.0 : 6.0,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Profile and Hijri date
+                            Row(
+                              children: [
+                                // User profile initial with tap to navigate to profile
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      AppRoutes.profile,
+                                    );
+                                  },
+                                  child: Hero(
+                                    tag: 'profileAvatar',
+                                    child: AnimatedContainer(
+                                      duration: const Duration(
+                                        milliseconds: 200,
+                                      ),
+                                      width: innerBoxIsScrolled ? 36 : 42,
+                                      height: innerBoxIsScrolled ? 36 : 42,
+                                      child: CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        child: Text(
+                                          _getProfileInitial(),
+                                          style: TextStyle(
+                                            fontSize: innerBoxIsScrolled
+                                                ? 16
+                                                : 18,
+                                            color: const Color(0xFF219EBC),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                // Hijri date and location in column layout
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Hijri date
+                                    Text(
+                                      _getHijriDate(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: innerBoxIsScrolled ? 12 : 13,
+                                      ),
+                                    ),
+                                    // Location under Hijri date
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.location_on,
+                                          color: Colors.white,
+                                          size: innerBoxIsScrolled ? 10 : 12,
+                                        ),
+                                        SizedBox(width: 2),
+                                        Text(
+                                          'Bantul, Yogyakarta',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: innerBoxIsScrolled
+                                                ? 10
+                                                : 11,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+
+                            // Notification icon
+                            Container(
+                              padding: const EdgeInsets.all(4),
+                              child: Icon(
+                                Icons.notifications,
+                                color: Colors.white,
+                                size: innerBoxIsScrolled ? 20 : 24,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     flexibleSpace: FlexibleSpaceBar(
+                      // Hide the default title
+                      titlePadding: EdgeInsets.zero,
+                      title: null,
                       background: Stack(
                         fit: StackFit.expand,
                         children: [
@@ -539,99 +649,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(
                                 16.0,
-                                24.0,
+                                60.0, // Increased top padding to account for pinned header
                                 16.0,
                                 16.0,
-                              ), // Added extra top padding for status bar
+                              ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Top header section
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      // Left side: User profile with Hijri date & location to the right
-                                      Row(
-                                        children: [
-                                          // User profile initial with tap to navigate to profile
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                AppRoutes.profile,
-                                              );
-                                            },
-                                            child: CircleAvatar(
-                                              radius: 24,
-                                              backgroundColor: Colors.white,
-                                              child: Text(
-                                                _getProfileInitial(),
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  color: Color(0xFF219EBC),
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 12),
-                                          // Hijri date and location to the right of profile
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              // Hijri date
-                                              Text(
-                                                _getHijriDate(),
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 13,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 4),
-                                              // Location directly below Hijri date
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.location_on,
-                                                    color: Colors.white,
-                                                    size: 14,
-                                                  ),
-                                                  const SizedBox(width: 4),
-                                                  const Text(
-                                                    'Bantul, Yogyakarta',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-
-                                      // Right side: Notification
-                                      Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                        ),
-                                        child: const Icon(
-                                          Icons.notifications,
-                                          color: Colors.white,
-                                          size: 24,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  // Empty space where the pinned header elements would be
+                                  SizedBox(height: 50),
 
                                   // Center section with time and next prayer
                                   Expanded(
@@ -1032,6 +1058,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           bookmark['surahNumber'],
                                                       ayatNumber:
                                                           bookmark['ayatNumber'],
+                                                      // Include content if available
+                                                      ayatContent: bookmark['content'] ?? 
+                                                          "إِنَّمَا الْمُؤْمِنُونَ إِخْوَةٌ فَأَصْلِحُوا بَيْنَ أَخَوَيْكُمْ وَاتَّقُوا اللَّهَ لَعَلَّكُمْ تُرْحَمُونَ",
                                                       onTap: () {
                                                         Navigator.pushNamed(
                                                           context,
@@ -1481,7 +1510,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Stack(
                     children: [
                       // Search bar
-                      Positioned(
+                      AnimatedPositioned(
+                        duration: const Duration(milliseconds: 200),
                         top:
                             5, // Added top margin for better spacing with content
                         left: 0,
@@ -1830,12 +1860,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// BookmarkItem widget for displaying a bookmark in the horizontal list
+// BookmarkItem widget for displaying a bookmark in the horizontal list with content preview
 class BookmarkItem extends StatelessWidget {
   final String surahName;
   final int surahNumber;
   final int ayatNumber;
   final VoidCallback onTap;
+  final String? ayatContent; // Optional content to display
 
   const BookmarkItem({
     Key? key,
@@ -1843,6 +1874,7 @@ class BookmarkItem extends StatelessWidget {
     required this.surahNumber,
     required this.ayatNumber,
     required this.onTap,
+    this.ayatContent,
   }) : super(key: key);
 
   @override
@@ -1850,56 +1882,130 @@ class BookmarkItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 130,
-        margin: EdgeInsets.only(right: 8),
-        padding: EdgeInsets.all(12),
+        width: 200, // Wider for better content display
+        margin: const EdgeInsets.only(right: 12),
         decoration: BoxDecoration(
-          color: const Color(0xFF219EBC).withOpacity(0.08),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: const Color(0xFF219EBC).withOpacity(0.2)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF219EBC).withOpacity(0.15),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                Container(
-                  width: 22,
-                  height: 22,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF219EBC),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      '$surahNumber',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
+            // Header section with gradient background
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    const Color(0xFF219EBC),
+                    const Color(0xFF1A8CAB),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              child: Row(
+                children: [
+                  // Surah number indicator
+                  Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.3),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 1.5),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '$surahNumber',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    surahName,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                      color: Color(0xFF219EBC),
+                  const SizedBox(width: 10),
+                  // Surah name and ayat number
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          surahName,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          'Ayat $ayatNumber',
+                          style: const TextStyle(
+                            fontSize: 12, 
+                            color: Colors.white,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ],
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            const SizedBox(height: 6),
-            Text(
-              'Ayat $ayatNumber',
-              style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+            
+            // Content preview section
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Preview text of the ayat
+                    Text(
+                      ayatContent ?? 'Tap to read ayat...',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey[800],
+                        height: 1.5,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 4,
+                    ),
+                    const Spacer(),
+                    // "Read more" button at bottom
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Baca Selengkapnya',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: const Color(0xFF219EBC),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 10,
+                          color: Color(0xFF219EBC),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -1930,53 +2036,129 @@ class HadithBookmarkItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 130,
-        margin: const EdgeInsets.only(right: 8),
-        padding: const EdgeInsets.all(12),
+        width: 200, // Wider for better content display
+        height: 180, // Fixed height for consistent layout
+        margin: const EdgeInsets.only(right: 12),
         decoration: BoxDecoration(
-          color: const Color(0xFF219EBC).withOpacity(0.08),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: const Color(0xFF219EBC).withOpacity(0.2)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF219EBC).withOpacity(0.15),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                Container(
-                  width: 22,
-                  height: 22,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF219EBC),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.history_edu,
-                      color: Colors.white,
-                      size: 12,
+            // Header section with gradient background
+            Container(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [
+                    Color(0xFF0097A7),  // Different color scheme for hadith
+                    Color(0xFF219EBC),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              child: Row(
+                children: [
+                  // Hadith collection icon
+                  Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.3),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 1.5),
+                    ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.history_edu,
+                        color: Colors.white,
+                        size: 14,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    bookName,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                      color: Color(0xFF219EBC),
+                  const SizedBox(width: 10),
+                  // Book name and hadith number
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          bookName,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          'Hadith No. $hadithNumber',
+                          style: const TextStyle(
+                            fontSize: 12, 
+                            color: Colors.white,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ],
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            const SizedBox(height: 6),
-            Text(
-              'No. $hadithNumber',
-              style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+            
+            // Content preview section
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Preview text of the hadith
+                    Expanded(
+                      child: Text(
+                        hadithText,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey[800],
+                          height: 1.5,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 5,
+                      ),
+                    ),
+                    // "Read more" button at bottom
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Baca Selengkapnya',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: const Color(0xFF0097A7),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 10,
+                          color: Color(0xFF0097A7),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
