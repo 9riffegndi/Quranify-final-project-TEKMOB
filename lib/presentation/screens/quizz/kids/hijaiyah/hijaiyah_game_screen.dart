@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../data/models/hijaiyah/hijaiyah_letter.dart';
 import '../../../../../services/level_progress_service.dart';
+import '../../../../../services/hijaiyah_audio_service.dart';
 
 class HijaiyahGameScreen extends StatefulWidget {
   final int level;
@@ -22,6 +23,9 @@ class _HijaiyahGameScreenState extends State<HijaiyahGameScreen>
   late Animation<double> _animation;
   late List<HijaiyahLetter> _gameLetters;
   int _currentIndex = 0;
+  
+  // Audio service untuk memutar suara hijaiyah
+  final _audioService = HijaiyahAudioService();
 
   @override
   void initState() {
@@ -49,13 +53,41 @@ class _HijaiyahGameScreenState extends State<HijaiyahGameScreen>
     );
 
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+    
+    // Pre-load audio files untuk mengurangi latensi saat pertama kali diputar
+    _preloadAudioFiles();
 
     _controller.forward();
   }
 
+  // Memuat audio yang diperlukan untuk level ini
+  Future<void> _preloadAudioFiles() async {
+    try {
+      // Gunakan service untuk preload audio yang umum
+      await _audioService.preloadCommonAudio();
+      
+      // Preload audio spesifik untuk level ini
+      if (_gameLetters.isNotEmpty) {
+        // Hanya preload audio untuk huruf pertama agar tidak memberatkan
+        final firstLetter = _gameLetters.first;
+        _audioService.playHijaiyahAudio(
+          firstLetter.audio,
+          fallbackAudioFile: firstLetter.fallbackAudio,
+          showFeedback: false,
+        );
+      }
+    } catch (e) {
+      print('Error preloading audio files: $e');
+    }
+  }
+
+  // Metode initState sudah dimodifikasi untuk menggunakan HijaiyahAudioService
+  // secara langsung di tempat yang dibutuhkan
+
   @override
   void dispose() {
     _controller.dispose();
+    // Audio service dikelola sebagai singleton, tidak perlu di-dispose di sini
     super.dispose();
   }
 
@@ -134,13 +166,14 @@ class _HijaiyahGameScreenState extends State<HijaiyahGameScreen>
                         _controller.reset();
                         _controller.forward();
 
-                        // Play audio when tapped (in real app)
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Melafalkan: ${currentLetter.latin}'),
-                            duration: const Duration(seconds: 1),
-                            backgroundColor: const Color(0xFF219EBC),
-                          ),
+                        // Memutar audio huruf hijaiyah menggunakan service
+                        // dengan fallback audio jika tersedia
+                        _audioService.playHijaiyahAudio(
+                          currentLetter.audio,
+                          fallbackAudioFile: currentLetter.fallbackAudio,
+                          context: context,
+                          letterName: currentLetter.latin,
+                          showFeedback: true,
                         );
                       },
                       child: ScaleTransition(
@@ -212,12 +245,12 @@ class _HijaiyahGameScreenState extends State<HijaiyahGameScreen>
                     const SizedBox(height: 16),
                     ElevatedButton.icon(
                       onPressed: () {
-                        // In a real app, play audio here
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Melafalkan: ${currentLetter.latin}'),
-                            duration: const Duration(seconds: 1),
-                          ),
+                        // Memutar audio huruf hijaiyah menggunakan service
+                        _audioService.playHijaiyahAudio(
+                          currentLetter.audio,
+                          fallbackAudioFile: currentLetter.fallbackAudio,
+                          context: context,
+                          letterName: currentLetter.latin,
                         );
                       },
                       icon: const Icon(Icons.volume_up),

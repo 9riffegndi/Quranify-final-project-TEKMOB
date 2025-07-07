@@ -36,28 +36,64 @@ class _KidsHijaiyahScreenState extends State<KidsHijaiyahScreen> {
     // Level 2: Next set of letters (Dal to Zai)
     [
       HijaiyahLetter(arabic: 'د', latin: 'Dal', audio: 'dal.mp3'),
-      HijaiyahLetter(arabic: 'ذ', latin: 'Dzal', audio: 'dzal.mp3'),
-      HijaiyahLetter(arabic: 'ر', latin: 'Ra', audio: 'ra.mp3'),
-      HijaiyahLetter(arabic: 'ز', latin: 'Zai', audio: 'zai.mp3'),
+      HijaiyahLetter(
+        arabic: 'ذ',
+        latin: 'Dzal',
+        audio: 'dza.mp3',
+      ), // Menyesuaikan dengan nama file yang tersedia
+      HijaiyahLetter(
+        arabic: 'ر',
+        latin: 'Ra',
+        audio: 'ro.mp3',
+      ), // Menyesuaikan dengan nama file yang tersedia
+      HijaiyahLetter(
+        arabic: 'ز',
+        latin: 'Zai',
+        audio: 'zay.mp3',
+      ), // Menyesuaikan dengan nama file yang tersedia
     ],
     // Level 3: (Sin to Dhad)
     [
       HijaiyahLetter(arabic: 'س', latin: 'Sin', audio: 'sin.mp3'),
       HijaiyahLetter(arabic: 'ش', latin: 'Syin', audio: 'syin.mp3'),
-      HijaiyahLetter(arabic: 'ص', latin: 'Shad', audio: 'shad.mp3'),
-      HijaiyahLetter(arabic: 'ض', latin: 'Dhad', audio: 'dhad.mp3'),
+      HijaiyahLetter(
+        arabic: 'ص',
+        latin: 'Shad',
+        audio: 'shod.mp3',
+      ), // Menyesuaikan dengan nama file yang tersedia
+      HijaiyahLetter(
+        arabic: 'ض',
+        latin: 'Dhad',
+        audio: 'dhod.mp3',
+      ), // Menyesuaikan dengan nama file yang tersedia
     ],
     // Level 4: (Tha to Ain)
     [
-      HijaiyahLetter(arabic: 'ط', latin: 'Tha', audio: 'tha.mp3'),
-      HijaiyahLetter(arabic: 'ظ', latin: 'Zha', audio: 'zha.mp3'),
+      HijaiyahLetter(
+        arabic: 'ط',
+        latin: 'Tha',
+        audio: 'tho.mp3',
+      ), // Menyesuaikan dengan nama file yang tersedia
+      HijaiyahLetter(
+        arabic: 'ظ',
+        latin: 'Zha',
+        audio: 'dhzo.mp3',
+      ), // Menyesuaikan dengan nama file yang tersedia
       HijaiyahLetter(arabic: 'ع', latin: 'Ain', audio: 'ain.mp3'),
     ],
     // Level 5: (Ghain to Lam)
     [
-      HijaiyahLetter(arabic: 'غ', latin: 'Ghain', audio: 'ghain.mp3'),
+      HijaiyahLetter(
+        arabic: 'غ',
+        latin: 'Ghain',
+        audio: 'ghoin.mp3',
+      ), // Menyesuaikan dengan nama file yang tersedia
       HijaiyahLetter(arabic: 'ف', latin: 'Fa', audio: 'fa.mp3'),
-      HijaiyahLetter(arabic: 'ق', latin: 'Qaf', audio: 'qaf.mp3'),
+      HijaiyahLetter(
+        arabic: 'ق',
+        latin: 'Qaf',
+        audio: 'qof.mp3',
+      ), // Menyesuaikan dengan nama file yang tersedia
       HijaiyahLetter(arabic: 'ك', latin: 'Kaf', audio: 'kaf.mp3'),
       HijaiyahLetter(arabic: 'ل', latin: 'Lam', audio: 'lam.mp3'),
     ],
@@ -66,7 +102,11 @@ class _KidsHijaiyahScreenState extends State<KidsHijaiyahScreen> {
       HijaiyahLetter(arabic: 'م', latin: 'Mim', audio: 'mim.mp3'),
       HijaiyahLetter(arabic: 'ن', latin: 'Nun', audio: 'nun.mp3'),
       HijaiyahLetter(arabic: 'و', latin: 'Waw', audio: 'waw.mp3'),
-      HijaiyahLetter(arabic: 'ه', latin: 'Ha', audio: 'ha_end.mp3'),
+      HijaiyahLetter(
+        arabic: 'ه',
+        latin: 'Ha',
+        audio: 'ha.mp3',
+      ), // Menggunakan ha.mp3 yang tersedia
       HijaiyahLetter(arabic: 'ء', latin: 'Hamzah', audio: 'hamzah.mp3'),
       HijaiyahLetter(arabic: 'ي', latin: 'Ya', audio: 'ya.mp3'),
     ],
@@ -76,13 +116,21 @@ class _KidsHijaiyahScreenState extends State<KidsHijaiyahScreen> {
       HijaiyahLetter(arabic: 'ب', latin: 'Ba', audio: 'ba.mp3'),
       HijaiyahLetter(arabic: 'د', latin: 'Dal', audio: 'dal.mp3'),
       HijaiyahLetter(arabic: 'س', latin: 'Sin', audio: 'sin.mp3'),
-      HijaiyahLetter(arabic: 'ط', latin: 'Tha', audio: 'tha.mp3'),
+      HijaiyahLetter(
+        arabic: 'ط',
+        latin: 'Tha',
+        audio: 'tho.mp3',
+      ), // Menyesuaikan dengan nama file yang tersedia
     ],
     // Level 8: Mixed letters (review) - Group 2
     [
       HijaiyahLetter(arabic: 'ج', latin: 'Jim', audio: 'jim.mp3'),
       HijaiyahLetter(arabic: 'ح', latin: 'Ha', audio: 'ha.mp3'),
-      HijaiyahLetter(arabic: 'ق', latin: 'Qaf', audio: 'qaf.mp3'),
+      HijaiyahLetter(
+        arabic: 'ق',
+        latin: 'Qaf',
+        audio: 'qof.mp3',
+      ), // Menyesuaikan dengan nama file yang tersedia
       HijaiyahLetter(arabic: 'م', latin: 'Mim', audio: 'mim.mp3'),
       HijaiyahLetter(arabic: 'ي', latin: 'Ya', audio: 'ya.mp3'),
     ],
@@ -91,32 +139,32 @@ class _KidsHijaiyahScreenState extends State<KidsHijaiyahScreen> {
       HijaiyahLetter(
         arabic: 'بَ',
         latin: 'Ba (fathah)',
-        audio: 'ba_fathah.mp3',
+        audio: 'ba.mp3', // Menggunakan audio dasar yang tersedia
       ),
       HijaiyahLetter(
         arabic: 'بِ',
         latin: 'Bi (kasrah)',
-        audio: 'bi_kasrah.mp3',
+        audio: 'ba.mp3', // Menggunakan audio dasar yang tersedia
       ),
       HijaiyahLetter(
         arabic: 'بُ',
         latin: 'Bu (dhammah)',
-        audio: 'bu_dhammah.mp3',
+        audio: 'ba.mp3', // Menggunakan audio dasar yang tersedia
       ),
       HijaiyahLetter(
         arabic: 'تَ',
         latin: 'Ta (fathah)',
-        audio: 'ta_fathah.mp3',
+        audio: 'ta.mp3', // Menggunakan audio dasar yang tersedia
       ),
       HijaiyahLetter(
         arabic: 'تِ',
         latin: 'Ti (kasrah)',
-        audio: 'ti_kasrah.mp3',
+        audio: 'ta.mp3', // Menggunakan audio dasar yang tersedia
       ),
       HijaiyahLetter(
         arabic: 'تُ',
         latin: 'Tu (dhammah)',
-        audio: 'tu_dhammah.mp3',
+        audio: 'ta.mp3', // Menggunakan audio dasar yang tersedia
       ),
     ],
     // Level 10: Advanced - Tanwin
@@ -124,32 +172,32 @@ class _KidsHijaiyahScreenState extends State<KidsHijaiyahScreen> {
       HijaiyahLetter(
         arabic: 'بً',
         latin: 'Ban (fathatain)',
-        audio: 'ban_fathatain.mp3',
+        audio: 'ba.mp3', // Menggunakan audio dasar yang tersedia
       ),
       HijaiyahLetter(
         arabic: 'بٍ',
         latin: 'Bin (kasratain)',
-        audio: 'bin_kasratain.mp3',
+        audio: 'ba.mp3', // Menggunakan audio dasar yang tersedia
       ),
       HijaiyahLetter(
         arabic: 'بٌ',
         latin: 'Bun (dhammatain)',
-        audio: 'bun_dhammatain.mp3',
+        audio: 'ba.mp3', // Menggunakan audio dasar yang tersedia
       ),
       HijaiyahLetter(
         arabic: 'مً',
         latin: 'Man (fathatain)',
-        audio: 'man_fathatain.mp3',
+        audio: 'mim.mp3', // Menggunakan audio dasar yang tersedia
       ),
       HijaiyahLetter(
         arabic: 'مٍ',
         latin: 'Min (kasratain)',
-        audio: 'min_kasratain.mp3',
+        audio: 'mim.mp3', // Menggunakan audio dasar yang tersedia
       ),
       HijaiyahLetter(
         arabic: 'مٌ',
         latin: 'Mun (dhammatain)',
-        audio: 'mun_dhammatain.mp3',
+        audio: 'mim.mp3', // Menggunakan audio dasar yang tersedia
       ),
     ],
   ];
